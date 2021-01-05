@@ -19,8 +19,6 @@ public class Customer {
 	@Column
 	private String phoneNumber;
 	@Column
-	private long pinCode;
-	@Column
 	private String locality;
 	@Column
 	private String address;
@@ -32,6 +30,8 @@ public class Customer {
 	private String landMark;
 	@Column
 	private String locationType;
+	@Column
+	private long pinCode;
 
 	public Customer() {
 	}
@@ -39,13 +39,13 @@ public class Customer {
 	public Customer(CustomerDto customerDto) {
 		this.fullName = customerDto.getFullName();
 		this.phoneNumber = customerDto.getPhoneNumber();
-		this.pinCode = customerDto.getPinCode();
 		this.locality = customerDto.getLocality();
 		this.address = customerDto.getAddress();
 		this.state = customerDto.getState();
-		this.state = customerDto.getState();
+		this.city = customerDto.getCity();
 		this.landMark = customerDto.getLandMark();
 		this.locationType = customerDto.getLocationType();
+		this.pinCode = customerDto.getPinCode();
 	}
 
 	public void setUserId(long userId) {
