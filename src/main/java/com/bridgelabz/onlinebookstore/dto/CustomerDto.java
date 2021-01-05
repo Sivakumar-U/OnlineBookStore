@@ -10,6 +10,7 @@ public class CustomerDto {
 	private String locality;
 	private String landMark;
 	private String address;
+	private String city;
 	private String state;
 	private String locationType;
 	private long pinCode;
@@ -36,6 +37,10 @@ public class CustomerDto {
 
 	public String getState() {
 		return state;
+	}
+	
+	public String getCity() {
+		return city;
 	}
 
 	public String getLandMark() {
