@@ -119,12 +119,11 @@ public class UserService implements IUserService {
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("from@gmail.com"));
-			// System.out.println(forgotPasswordDTO.getEmail());
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailId.getEmailId()));
-			message.setSubject("Trying to sending email for forget password");
+			message.setSubject("Reset your password");
 			System.out.println(isIdAvailable.get().getFullName());
 			message.setText("Dear " + isIdAvailable.get().getFullName() + ","
-					+ "\n\n To Complete the password reset process,please click here: " + url + "\n\nToken: " + token);
+					+ "\n\n \"We have sent a reset password link to your email.\nPlease click on this url: " + url + "\n\n\nToken: " + token);
 
 			// javax.mail.Transport transport = session.getTransport("smtp");
 			Transport.send(message);
