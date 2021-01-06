@@ -50,6 +50,10 @@ public class Book {
 	@Column(name = "updated_date_and_time")
 	private Date updatedDateAndTime;
 
+	public Book() {
+
+	}
+
 	public Book(BookDTO bookDTO) {
 		this.updateBookDataByBookId(bookDTO);
 	}
