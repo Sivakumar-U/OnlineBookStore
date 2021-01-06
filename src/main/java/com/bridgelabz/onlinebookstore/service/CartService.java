@@ -49,6 +49,7 @@ public class CartService implements ICartService {
 			cartItem.setOrderQuantity(order_quantity);
 			cartItem.setUser(user);
 			cartItem.setBook(book);
+			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity()-order_quantity,bookId);
 		}
 		cartRepository.save(cartItem);
 		return null;
@@ -60,7 +61,7 @@ public class CartService implements ICartService {
 		Book book = bookStoreRepository.findById(bookId).get();
 
 		double subtotal =0;
-		if(book.getQuantity() > order_quantity) {
+		if(book.getQuantity() >= order_quantity) {
 			cartRepository.updateOrderQuantity(order_quantity, bookId, userId);
 			subtotal = book.getPrice() * order_quantity;
 			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity()-order_quantity,bookId);

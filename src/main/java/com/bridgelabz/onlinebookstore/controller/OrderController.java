@@ -24,12 +24,12 @@ public class OrderController {
 	@Autowired
 	private IOrderService orderService;
 
-//	@ApiOperation("For getting order summary")
-//	@GetMapping("/summary")
-//	public ResponseEntity<Response> getOrderSummary(@RequestHeader String token) {
-//        String orderDetails = orderService.getSummary(token);
-//        return new ResponseEntity<>(new Response(200, "Response sent successfully", orderDetails), HttpStatus.OK);
-//    }
+	@ApiOperation("For getting order summary")
+	@GetMapping("/summary")
+	public ResponseEntity<Response> getOrderSummary(@RequestHeader String token) {
+        Order orderDetails = orderService.getSummary(token);
+        return new ResponseEntity<>(new Response(200, "Response sent successfully", orderDetails), HttpStatus.OK);
+    }
 	
 	@ApiOperation("For placing order")
     @PostMapping("/place")

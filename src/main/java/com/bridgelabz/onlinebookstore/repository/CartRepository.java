@@ -15,7 +15,6 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
 	@Query("UPDATE Cart c SET c.orderQuantity=?1 WHERE c.book.bookId=?2 AND c.user.userId=?3")
 	@Modifying
-//	@Query(value = "UPDATE cart_items c set c.order_quantity=:order_quantity where c.book_id=:bookId and c.user_id=:userId", nativeQuery = true)
 	public void updateOrderQuantity(Integer order_quantity, Long bookId, Long userId);
 
 	@Query("DELETE FROM Cart c WHERE c.user.id=?1 AND c.book.bookId=?2")

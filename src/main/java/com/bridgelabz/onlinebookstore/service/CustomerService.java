@@ -24,7 +24,7 @@ public class CustomerService implements ICustomerService {
 	@Override
 	public Customer getCustomerDetails(String token) {
 		Long userId = JwtGenerator.decodeJWT(token);
-		Optional<Customer> customer = customerRepository.findById(userId);
+		Optional<Customer> customer = customerRepository.findByUserId(userId);
 		return customer.get();
 	}
 

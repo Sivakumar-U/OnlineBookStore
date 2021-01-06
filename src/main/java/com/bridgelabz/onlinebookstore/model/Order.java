@@ -1,10 +1,12 @@
 package com.bridgelabz.onlinebookstore.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,7 +23,7 @@ public @Data class Order {
 	private double totalPrice;
 	private LocalDate orderDate;
 	
-	@OneToMany
+	@OneToMany()
 	public List<Cart> cartItems;
 	
 	public Order() {}

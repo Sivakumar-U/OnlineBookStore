@@ -9,7 +9,7 @@ import com.bridgelabz.onlinebookstore.model.Order;
 
 public interface OrderRepository extends JpaRepository<Order,Long>{
 
-    @Query(value = "SELECT * FROM order where user=:userId",nativeQuery = true)
-	Optional<Order> findByUserId(Long userId);
+    @Query(value = "SELECT * FROM ordered_items where user_id=:userId",nativeQuery = true)
+    Optional<Order> findByUserId(Long userId);
 
 }

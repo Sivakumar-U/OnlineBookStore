@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -32,10 +33,10 @@ public class OrderService implements IOrderService {
     private UserRepository userRepository;
     
 	@Override
-	public String getSummary(String token) {
+	public Order getSummary(String token) {
 		Long userId=generator.decodeJWT(token);
-		Order orders=orderRepository.findByUserId(userId).orElse(null);
-		return orders.toString();
+		Optional<Order> orders=orderRepository.findByUserId(userId);
+		return orders.get();
 	}
 
 	@Override
@@ -53,8 +54,9 @@ public class OrderService implements IOrderService {
 			}
 		}
 		List<Cart> cart=cartRepository.findByUserId(userId);
+		System.out.println(cart);
         double totalPrice= cart.stream().mapToDouble(book -> book.getSubTotal()).sum();
-
+        System.out.println(totalPrice);
         Order order=new Order(orderId,userId,cart,totalPrice);
         orderRepository.save(order);
         
