@@ -18,7 +18,7 @@ import com.bridgelabz.onlinebookstore.repository.UserRepository;
 import com.bridgelabz.onlinebookstore.response.EmailObject;
 import com.bridgelabz.onlinebookstore.response.Response;
 import com.bridgelabz.onlinebookstore.utility.JwtGenerator;
-//import com.bridgelabz.onlinebookstore.utility.RabbitMQSender;
+import com.bridgelabz.onlinebookstore.utility.MailServiceUtility;
 
 @Service
 public class UserService implements IUserService {
@@ -28,26 +28,25 @@ public class UserService implements IUserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//	@Autowired
-//	private RabbitMQSender rabbitMQSender;
+	@Autowired
+	private MailServiceUtility mailServiceUtility;
 
 	private static final String VERIFICATION_URL = "http://localhost:3000/verify/";
-//	private static final String RESETPASSWORD_URL = "http://localhost:8080/bookstore/resetpassword?token=";
+	private static final String RESETPASSWORD_URL = "http://localhost:8080/bookstore/resetpassword?token=";
 
 	public boolean register(RegistrationDto registrationDto) {
 		Optional<User> isEmailAvailable = userRepository.findByEmail(registrationDto.getEmailId());
-//		if (isEmailAvailable.isPresent()) {
-//			return false;
-//			//throw new UserException("email exist");
-//		}
+		if (isEmailAvailable.isPresent()) {
+			return false;
+		}
 		User userDetails = new User();
 		BeanUtils.copyProperties(registrationDto, userDetails);
 		userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-//		return userRepository.save(userDetails);
-//		String response = getResponse(userDetails.getUserId());
-//		if (rabbitMQSender.send(new EmailObject(registrationDto.getEmailId(), "Registration Link...", response)))
-//			return true;
-	return true;
+		userRepository.save(userDetails);
+		String response = getResponse(userDetails.getUserId());
+//		if (mailServiceUtility.recievedMessage(new EmailObject(registrationDto.getEmailId(), "Registration Link...", response)));
+//				//send(new EmailObject(registrationDto.getEmailId(), "Registration Link...", response)));
+		return true;
 	}
 
 	private String getResponse(long userId) {
@@ -86,17 +85,20 @@ public class UserService implements IUserService {
 		return false;
 	}
 
-//	@Override
-//	public Response forgetPassword(ForgotPasswordDto userMail) {
-//		User isIdAvailable = userRepository.findByEmail(userMail.getEmailId()).get();
-//		if (isIdAvailable != null && isIdAvailable.isVerify()) {
-//			String token = JwtGenerator.createJWT(isIdAvailable.getUserId());
-//			String response = RESETPASSWORD_URL + token;
-//			if (rabbitMQSender.send(new EmailObject(isIdAvailable.getEmailId(), "ResetPassword Link...", response)))
-//				return new Response(HttpStatus.OK.value(), "ResetPassword link Successfully", token);
-//		}
-//		return new Response(HttpStatus.OK.value(), "Email sending failed");
-//	}
+	@Override
+	public Response forgetPassword(ForgotPasswordDto userMail) {
+		User isIdAvailable = userRepository.findByEmail(userMail.getEmailId()).get();
+		if (isIdAvailable != null && isIdAvailable.isVerify()) {
+			String token = JwtGenerator.createJWT(isIdAvailable.getUserId());
+			String response = RESETPASSWORD_URL + token;
+			if (mailServiceUtility.recievedMessage(new EmailObject(isIdAvailable.getEmailId(), "Registration Link...", response)))
+				return new Response(HttpStatus.OK.value(), "ResetPassword link Successfully", token);
+			return new Response(HttpStatus.OK.value(), "ResetPassword link Successfully");
+
+		}
+		else
+			return new Response(HttpStatus.OK.value(), "Email sending failed");
+	}
 
 	@Override
 	public boolean resetPassword(ResetPasswordDto resetPassword, String token) throws UserException {

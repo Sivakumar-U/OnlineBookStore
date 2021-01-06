@@ -12,9 +12,9 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long sequenceNo;
-	@Column
+
 	private long userId;
-	@Column
+
 	private String fullName;
 	@Column
 	private String phoneNumber;
@@ -48,35 +48,4 @@ public class Customer {
 		this.pinCode = customerDto.getPinCode();
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public String getFullName() {
-		return this.fullName;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public String getLandMark() {
-		return landMark;
-	}
-
-	public long getPinCode() {
-		return this.pinCode;
-	}
 }
