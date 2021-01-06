@@ -1,10 +1,11 @@
 package com.bridgelabz.onlinebookstore.service;
 
-import com.bridgelabz.onlinebookstore.dto.LoginDto;
-import com.bridgelabz.onlinebookstore.dto.ResetPasswordDto;
-import com.bridgelabz.onlinebookstore.dto.RegistrationDto;
 import com.bridgelabz.onlinebookstore.dto.ForgotPasswordDto;
+import com.bridgelabz.onlinebookstore.dto.LoginDto;
+import com.bridgelabz.onlinebookstore.dto.RegistrationDto;
+import com.bridgelabz.onlinebookstore.dto.ResetPasswordDto;
 import com.bridgelabz.onlinebookstore.exception.UserException;
+
 import com.bridgelabz.onlinebookstore.response.Response;
 
 public interface IUserService {
@@ -15,7 +16,7 @@ public interface IUserService {
 
 	boolean verify(String token) throws UserException;
 
-	Response forgetPassword(ForgotPasswordDto emailId);
+	Response forgetPassword(ForgotPasswordDto emailId) throws UserException;
 
 	boolean resetPassword(ResetPasswordDto resetPassword, String token) throws UserException;
 
