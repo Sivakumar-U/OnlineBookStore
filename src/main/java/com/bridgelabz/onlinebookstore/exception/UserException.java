@@ -19,4 +19,3 @@ public class UserException extends Exception {
 	public ExceptionType type;
 
 }
-
