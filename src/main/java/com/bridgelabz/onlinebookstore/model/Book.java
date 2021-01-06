@@ -49,7 +49,7 @@ public class Book {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_date_and_time")
 	private Date updatedDateAndTime;
-
+	
 	public Book() {
 
 	}
