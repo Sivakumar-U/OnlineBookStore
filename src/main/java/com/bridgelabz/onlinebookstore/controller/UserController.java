@@ -35,25 +35,23 @@ public class UserController {
 	public ResponseEntity<Response> register(@RequestBody @Valid RegistrationDto registrationDto) throws UserException {
 		if (userService.register(registrationDto))
 			return new ResponseEntity<>(new Response(200, "user register successful"), HttpStatus.OK);
-		else
-			return new ResponseEntity<>(new Response(400, "user register un-successful"), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new Response(400, "user register un-successful"), HttpStatus.BAD_REQUEST);
 	}
 
 	@ApiOperation("For signin")
 	@PostMapping("/signin")
 	public ResponseEntity<Response> login(@RequestBody @Valid LoginDto loginDTO) throws UserException {
-		String token = userService.login(loginDTO);
-		if (token != null) {
-			return new ResponseEntity<>(new Response(200, "User login successful", token), HttpStatus.OK);
+		String message = userService.login(loginDTO);
+		if (message.contains("user")) {
+			return new ResponseEntity<>(new Response(400, message), HttpStatus.NOT_ACCEPTABLE);
 		}
-		return new ResponseEntity<>(new Response(400, "User login un-successful"), HttpStatus.NOT_ACCEPTABLE);
+		return new ResponseEntity<>(new Response(200, "User login successful. Token : ", message), HttpStatus.OK);
 	}
 
 	@GetMapping("/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable("token") String token) throws UserException {
 		if (userService.verify(token))
 			return new ResponseEntity<>(new Response(200, "User verified successfully"), HttpStatus.OK);
-
 		return new ResponseEntity<>(new Response(400, "User verification failed"), HttpStatus.NOT_ACCEPTABLE);
 	}
 
@@ -64,11 +62,9 @@ public class UserController {
 	}
 
 	@PostMapping("/reset/password")
-	public ResponseEntity<Response> resetPassword(@Valid @RequestBody ResetPasswordDto resetPassword,
-			@RequestHeader String token) throws UserException {
+	public ResponseEntity<Response> resetPassword(@Valid @RequestBody ResetPasswordDto resetPassword, @RequestHeader String token) throws UserException {
 		if (userService.resetPassword(resetPassword, token))
 			return new ResponseEntity<>(new Response(200, "User password reset successful"), HttpStatus.OK);
-
 		return new ResponseEntity<>(new Response(400, "User password reset unsuccessful"), HttpStatus.NOT_ACCEPTABLE);
 	}
 }

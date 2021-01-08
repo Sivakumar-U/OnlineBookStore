@@ -25,14 +25,14 @@ public class OrderController {
 	@ApiOperation("For getting order summary")
 	@GetMapping("/summary")
 	public ResponseEntity<Response> getOrderSummary(@RequestHeader String token) {
-        Order orderDetails = orderService.getSummary(token);
-        return new ResponseEntity<>(new Response(200, "Response sent successfully", orderDetails), HttpStatus.OK);
-    }
-	
+		Order orderDetails = orderService.getSummary(token);
+		return new ResponseEntity<>(new Response(200, "Got order summary successfully", orderDetails), HttpStatus.OK);
+	}
+
 	@ApiOperation("For placing order")
-    @PostMapping("/place")
-    public ResponseEntity<Response> placeOrder(@RequestHeader String token) {
-        Long orderId = orderService.placeOrder(token);
-        return new ResponseEntity<>(new Response(200,"Order placed successfully", orderId), HttpStatus.OK);
-    }
+	@PostMapping("/place")
+	public ResponseEntity<Response> placeOrder(@RequestHeader String token) {
+		Long orderId = orderService.placeOrder(token);
+		return new ResponseEntity<>(new Response(200, "Order placed successfully with order id : ", orderId), HttpStatus.OK);
+	}
 }

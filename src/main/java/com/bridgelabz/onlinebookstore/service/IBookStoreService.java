@@ -12,17 +12,17 @@ public interface IBookStoreService {
 
 	List<Book> getAllBooks() throws BookException;
 
-	List<Book> sortBooksByPriceFromLowToHigh() throws BookException;
+	List<Book> sortBooksByPriceFromLowToHigh();
 
-	List<Book> sortBooksByPriceFromHighToLow() throws BookException;
+	List<Book> sortBooksByPriceFromHighToLow();
 
-	Book createBookData(BookDTO bookDTO) throws BookException;
+	Book createBookData(BookDTO bookDTO);
 
-	Book getBookDataByBookId(long bookId) throws BookException;
+	Book getBookDataByBookId(long bookId);
 
-	Book updateBookDataByBookId(long bookId, @Valid BookDTO bookDTO) throws BookException;
+	Book updateBookDataByBookId(long bookId, @Valid BookDTO bookDTO);
 
-	void deleteBookDataByBookId(long bookId) throws BookException;
+	void deleteBookDataByBookId(long bookId);
 
 	long count();
 

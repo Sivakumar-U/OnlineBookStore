@@ -12,11 +12,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import lombok.Data;
 
 @Entity
 @Table(name = "user")
@@ -26,24 +25,20 @@ public @Data class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private long userId;
-	private String fullName;	// name
-	private String emailId;		// emailId
-	private String password;	// password
-	private boolean isVerify;	// for verification
+	private String fullName; // name
+	private String emailId; // emailId
+	private String password; // password
+	private boolean isVerify; // for verification
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_date_and_time")
-	private Date createdDateAndTime;	// To Identify Complete User registration Information
+	private Date createdDateAndTime; // To Identify Complete User registration Information
 
-	@CreationTimestamp
+	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_login_date")
-	private Date lastLoginDate;		// To identify user's last login
-
-//	@ManyToMany(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "book
-//	private List<Book> books;
+	private Date lastLoginDate; // To identify user's last login
 
 	public User(String fullName, String emailId, String password) {
 

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Table(name = "customer")
 @Data
-//@NoArgsConstructor
 @RequiredArgsConstructor
 public class Customer {
 	@Id

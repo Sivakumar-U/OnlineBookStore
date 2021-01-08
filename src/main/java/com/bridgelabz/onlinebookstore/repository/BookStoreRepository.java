@@ -13,8 +13,8 @@ public interface BookStoreRepository extends JpaRepository<Book, Long> {
 	@Query("UPDATE Book SET quantity=?1 WHERE bookId=?2")
 	@Modifying
 	public void updateQuantityAfterOrder(Integer quantity, Long bookId);
-	
-	@Query(value="select * from book order by created_date_and_time desc",nativeQuery = true)
+
+	@Query(value = "select * from book order by created_date_and_time desc", nativeQuery = true)
 	public List<Book> findBookOrderByCreatedDateAndTimeDesc();
 
 }

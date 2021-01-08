@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.onlinebookstore.exception.BookException;
 import com.bridgelabz.onlinebookstore.model.Cart;
 import com.bridgelabz.onlinebookstore.response.Response;
 import com.bridgelabz.onlinebookstore.service.ICartService;
@@ -44,23 +43,25 @@ public class CartController {
 
 	@ApiOperation(value = "For adding the book to cart")
 	@PostMapping("/add/{bookId}")
-	public ResponseEntity<Response> addToCart(@PathVariable("bookId") Long bookId, @RequestHeader String token) throws BookException {
+	public ResponseEntity<Response> addToCart(@PathVariable("bookId") Long bookId, @RequestHeader String token) {
 		Cart cartItem = cartService.addBookToCart(token, bookId, 1);
-		return new ResponseEntity<>(new Response(200, "Book added to cart successfully", cartItem), HttpStatus.OK);
-
+		if(cartItem != null)
+			return new ResponseEntity<>(new Response(200, "Book added to cart successfully", cartItem), HttpStatus.OK);
+		return new ResponseEntity<>(new Response(400, "Book do not exist!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
 
 	@ApiOperation(value = "For updating book quantity")
 	@PostMapping("/update/{bookId}/{orderQuantity}")
-	public String updateBookOrderQuantity(@PathVariable("bookId") Long bookId,
-			@PathVariable("orderQuantity") Integer orderQuantity, @RequestHeader String token) throws BookException {
-		double subtotal = cartService.updateOrderQuantity(bookId, orderQuantity, token);
-		return String.valueOf(subtotal);
+	public ResponseEntity<Response> updateBookOrderQuantity(@PathVariable("bookId") Long bookId, @PathVariable("orderQuantity") Integer orderQuantity, @RequestHeader String token) {
+		String value = cartService.updateOrderQuantity(bookId, orderQuantity, token);
+		if(value != null)
+			return new ResponseEntity<>(new Response(200, value), HttpStatus.OK);
+		return new ResponseEntity<>(new Response(400, "Book do not exist!!"), HttpStatus.NOT_ACCEPTABLE);		
 	}
 
 	@ApiOperation(value = "For removing book from Cart")
 	@DeleteMapping("/remove/{bookId}/{userId}")
-	public ResponseEntity<Response> removeFromCart(@PathVariable("bookId") Long bookId, @RequestHeader String token) throws BookException {
+	public ResponseEntity<Response> removeFromCart(@PathVariable("bookId") Long bookId, @RequestHeader String token) {
 		cartService.removeProduct(bookId, token);
 		return new ResponseEntity<>(new Response(200, "Book removed from cart successfully"), HttpStatus.OK);
 	}
@@ -73,7 +74,7 @@ public class CartController {
 
 	@ApiOperation(value = "For adding book to wishlist")
 	@PostMapping("/wishlist/add/{bookId}")
-	public Response addToWishList(@PathVariable("bookId") Long bookId, @RequestHeader("token") String token) throws BookException {
+	public Response addToWishList(@PathVariable("bookId") Long bookId, @RequestHeader("token") String token) {
 		return cartService.addBookToWishList(bookId, token);
 	}
 
