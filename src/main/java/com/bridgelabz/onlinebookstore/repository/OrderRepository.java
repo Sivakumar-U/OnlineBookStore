@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.bridgelabz.onlinebookstore.model.Order;
 
-public interface OrderRepository extends JpaRepository<Order,Long>{
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query(value = "SELECT * FROM order where user=:userId",nativeQuery = true)
+	@Query(value = "SELECT * FROM ordered_items where user_id=:userId", nativeQuery = true)
 	Optional<Order> findByUserId(Long userId);
 
 }

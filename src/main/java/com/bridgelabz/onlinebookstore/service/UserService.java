@@ -1,6 +1,15 @@
 package com.bridgelabz.onlinebookstore.service;
 
 import java.util.Optional;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,38 +24,38 @@ import com.bridgelabz.onlinebookstore.dto.ResetPasswordDto;
 import com.bridgelabz.onlinebookstore.exception.UserException;
 import com.bridgelabz.onlinebookstore.model.User;
 import com.bridgelabz.onlinebookstore.repository.UserRepository;
-import com.bridgelabz.onlinebookstore.response.EmailObject;
 import com.bridgelabz.onlinebookstore.response.Response;
 import com.bridgelabz.onlinebookstore.utility.JwtGenerator;
-import com.bridgelabz.onlinebookstore.utility.MailServiceUtility;
 
 @Service
 public class UserService implements IUserService {
+	ForgotPasswordDto forgetPasswordDto;
+
+	User userObj;
+
 	@Autowired
 	public UserRepository userRepository;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	private MailServiceUtility mailServiceUtility;
-
-	private static final String VERIFICATION_URL = "http://localhost:3000/verify/";
-	private static final String RESETPASSWORD_URL = "http://localhost:8080/bookstore/resetpassword?token=";
+	private static final String VERIFICATION_URL = "http://localhost:8080/swagger-ui.html#/user-controller/userVerificationUsingGET";
 
 	public boolean register(RegistrationDto registrationDto) {
 		Optional<User> isEmailAvailable = userRepository.findByEmail(registrationDto.getEmailId());
+		System.out.println(isEmailAvailable);
 		if (isEmailAvailable.isPresent()) {
 			return false;
+		} else {
+			User userDetails = new User();
+			BeanUtils.copyProperties(registrationDto, userDetails);
+			userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
+			User userObj = userRepository.save(userDetails);
+			System.out.println(userObj);
+			String response = getResponse(userDetails.getUserId());
+			return true;
 		}
-		User userDetails = new User();
-		BeanUtils.copyProperties(registrationDto, userDetails);
-		userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-		userRepository.save(userDetails);
-		String response = getResponse(userDetails.getUserId());
-//		if (mailServiceUtility.recievedMessage(new EmailObject(registrationDto.getEmailId(), "Registration Link...", response)));
-//				//send(new EmailObject(registrationDto.getEmailId(), "Registration Link...", response)));
-		return true;
+
 	}
 
 	private String getResponse(long userId) {
@@ -86,18 +95,45 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Response forgetPassword(ForgotPasswordDto userMail) {
-		User isIdAvailable = userRepository.findByEmail(userMail.getEmailId()).get();
-		if (isIdAvailable != null && isIdAvailable.isVerify()) {
-			String token = JwtGenerator.createJWT(isIdAvailable.getUserId());
-			String response = RESETPASSWORD_URL + token;
-			if (mailServiceUtility.recievedMessage(new EmailObject(isIdAvailable.getEmailId(), "Registration Link...", response)))
-				return new Response(HttpStatus.OK.value(), "ResetPassword link Successfully", token);
-			return new Response(HttpStatus.OK.value(), "ResetPassword link Successfully");
-
+	public Response forgetPassword(ForgotPasswordDto emailId) throws UserException {
+		String url = "http://localhost:8080/swagger-ui.html#/user-controller/resetPasswordUsingPOST";
+		Optional<User> isIdAvailable = userRepository.findByEmail(emailId.getEmailId());
+		if (isIdAvailable == null) {
+			throw new UserException("Email not present");
 		}
-		else
-			return new Response(HttpStatus.OK.value(), "Email sending failed");
+		String token = JwtGenerator.createJWT(isIdAvailable.get().getUserId());
+		final String username = "onlinebookstore2021@gmail.com";
+		final String password = "Onlinebookstore@2021";
+
+		Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "465");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.socketFactory.port", "465");
+		prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+		Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("from@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailId.getEmailId()));
+			message.setSubject("Reset your password");
+			System.out.println(isIdAvailable.get().getFullName());
+			message.setText("Dear " + isIdAvailable.get().getFullName() + ","
+					+ "\n\n \"We have sent a reset password link to your email.\nPlease click on this url: " + url + "\n\n\nToken: " + token);
+
+			// javax.mail.Transport transport = session.getTransport("smtp");
+			Transport.send(message);
+			System.out.println("Done");
+
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		return new Response(HttpStatus.OK.value(), "Email sending");
 	}
 
 	@Override

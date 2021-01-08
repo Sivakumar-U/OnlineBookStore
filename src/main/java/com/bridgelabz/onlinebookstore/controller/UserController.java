@@ -35,7 +35,8 @@ public class UserController {
 	public ResponseEntity<Response> register(@RequestBody @Valid RegistrationDto registrationDto) throws UserException {
 		if (userService.register(registrationDto))
 			return new ResponseEntity<>(new Response(200, "user register successful"), HttpStatus.OK);
-		return new ResponseEntity<>(new Response(400, "user register un-successful"), HttpStatus.BAD_REQUEST);
+		else
+			return new ResponseEntity<>(new Response(400, "user register un-successful"), HttpStatus.BAD_REQUEST);
 	}
 
 	@ApiOperation("For signin")
@@ -56,17 +57,15 @@ public class UserController {
 		return new ResponseEntity<>(new Response(400, "User verification failed"), HttpStatus.NOT_ACCEPTABLE);
 	}
 
-	@PostMapping("/forgot/password")
-	public ResponseEntity<Response> forgotPassword(@RequestBody @Valid ForgotPasswordDto emailId) {
-
+	@PostMapping("/forget/password")
+	public ResponseEntity<Response> forgotPassword(@Valid @RequestBody ForgotPasswordDto emailId) throws UserException {
 		Response response = userService.forgetPassword(emailId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/reset/password")
-	public ResponseEntity<Response> resetPassword(@RequestBody @Valid ResetPasswordDto resetPassword,
+	public ResponseEntity<Response> resetPassword(@Valid @RequestBody ResetPasswordDto resetPassword,
 			@RequestHeader String token) throws UserException {
-
 		if (userService.resetPassword(resetPassword, token))
 			return new ResponseEntity<>(new Response(200, "User password reset successful"), HttpStatus.OK);
 

@@ -11,26 +11,28 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="ordered_items")
+@Table(name = "ordered_items")
 public @Data class Order {
-	
+
 	@Id
 	private long orderId;
-	
+
 	private long userId;
 	private double totalPrice;
 	private LocalDate orderDate;
-	
-	@OneToMany
+
+	@OneToMany()
 	public List<Cart> cartItems;
-	
-	public Order() {}
+
+	public Order() {
+	}
+
 	public Order(Long orderId, Long userId, List<Cart> cartItems, double totalPrice) {
-        this.orderId=orderId;
-        this.userId=userId;
-        this.cartItems=cartItems;
-        this.totalPrice=totalPrice;
-        this.orderDate=LocalDate.now();
-    }
+		this.orderId = orderId;
+		this.userId = userId;
+		this.cartItems = cartItems;
+		this.totalPrice = totalPrice;
+		this.orderDate = LocalDate.now();
+	}
 
 }

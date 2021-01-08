@@ -4,7 +4,7 @@ import com.bridgelabz.onlinebookstore.model.Order;
 
 public interface IOrderService {
 
-	String getSummary(String token);
+	Order getSummary(String token);
 
 	Long placeOrder(String token);
 

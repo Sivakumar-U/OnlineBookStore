@@ -1,7 +1,5 @@
 package com.bridgelabz.onlinebookstore.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +18,21 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-	
+
 	@Autowired
 	private IOrderService orderService;
 
-//	@ApiOperation("For getting order summary")
-//	@GetMapping("/summary")
-//	public ResponseEntity<Response> getOrderSummary(@RequestHeader String token) {
-//        String orderDetails = orderService.getSummary(token);
-//        return new ResponseEntity<>(new Response(200, "Response sent successfully", orderDetails), HttpStatus.OK);
-//    }
-	
+	@ApiOperation("For getting order summary")
+	@GetMapping("/summary")
+	public ResponseEntity<Response> getOrderSummary(@RequestHeader String token) {
+		Order orderDetails = orderService.getSummary(token);
+		return new ResponseEntity<>(new Response(200, "Response sent successfully", orderDetails), HttpStatus.OK);
+	}
+
 	@ApiOperation("For placing order")
-    @PostMapping("/place")
-    public ResponseEntity<Response> placeOrder(@RequestHeader String token) {
-        Long orderId = orderService.placeOrder(token);
-        return new ResponseEntity<>(new Response(200,"Order placed successfully", orderId), HttpStatus.OK);
-    }
+	@PostMapping("/place")
+	public ResponseEntity<Response> placeOrder(@RequestHeader String token) {
+		Long orderId = orderService.placeOrder(token);
+		return new ResponseEntity<>(new Response(200, "Order placed successfully", orderId), HttpStatus.OK);
+	}
 }

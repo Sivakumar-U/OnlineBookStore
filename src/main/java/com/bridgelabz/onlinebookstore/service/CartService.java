@@ -17,9 +17,9 @@ import com.bridgelabz.onlinebookstore.utility.JwtGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
-@Slf4j
 public class CartService implements ICartService {
 
 	@Autowired
@@ -49,6 +49,9 @@ public class CartService implements ICartService {
 			cartItem.setOrderQuantity(order_quantity);
 			cartItem.setUser(user);
 			cartItem.setBook(book);
+
+			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
+
 		}
 		cartRepository.save(cartItem);
 		return null;
@@ -58,16 +61,14 @@ public class CartService implements ICartService {
 	public double updateOrderQuantity(Long bookId, Integer order_quantity, String token) {
 		Long userId = generator.decodeJWT(token);
 		Book book = bookStoreRepository.findById(bookId).get();
-
-		double subtotal =0;
-		if(book.getQuantity() > order_quantity) {
+		double subtotal = 0;
+		if (book.getQuantity() > order_quantity) {
 			cartRepository.updateOrderQuantity(order_quantity, bookId, userId);
 			subtotal = book.getPrice() * order_quantity;
-			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity()-order_quantity,bookId);
+			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
 			return subtotal;
-		}
-		else {
-			return subtotal; 
+		} else {
+			return subtotal;
 		}
 	}
 
@@ -82,5 +83,4 @@ public class CartService implements ICartService {
 		Long userId = generator.decodeJWT(token);
 		cartRepository.deleteByUserAndBook(userId, bookId);
 	}
-
 }
