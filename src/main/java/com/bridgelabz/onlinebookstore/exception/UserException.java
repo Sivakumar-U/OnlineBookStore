@@ -10,8 +10,6 @@ public class UserException extends Exception {
 		super(msg);
 	}
 
-	private String message;
-
 	public enum ExceptionType {
 		INVALID_USER, INVALID_CREDENTIALS, ALREADY_VERFIED
 	}

@@ -24,6 +24,7 @@ public class RegistrationDto {
 	// @Size(min = 8, max = 12)
 	private String password;
 
+	
 	public String getFullName() {
 		return fullName;
 	}

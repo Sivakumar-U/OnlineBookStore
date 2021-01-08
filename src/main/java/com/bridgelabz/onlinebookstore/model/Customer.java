@@ -4,10 +4,13 @@ import javax.persistence.*;
 import com.bridgelabz.onlinebookstore.dto.CustomerDto;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "customer")
 @Data
+//@NoArgsConstructor
+@RequiredArgsConstructor
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +27,6 @@ public class Customer {
 	private String landMark;
 	private String locationType;
 	private long pinCode;
-
-	public Customer() {
-	}
 
 	public Customer(CustomerDto customerDto) {
 		this.fullName = customerDto.getFullName();
