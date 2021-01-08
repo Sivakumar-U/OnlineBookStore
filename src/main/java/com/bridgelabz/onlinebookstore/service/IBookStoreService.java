@@ -26,4 +26,6 @@ public interface IBookStoreService {
 
 	long count();
 
+	List<Book> sortBooksByNewArrivals();
+
 }

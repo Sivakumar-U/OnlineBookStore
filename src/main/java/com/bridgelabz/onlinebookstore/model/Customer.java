@@ -16,21 +16,13 @@ public class Customer {
 	private long userId;
 
 	private String fullName;
-	@Column
 	private String phoneNumber;
-	@Column
 	private String locality;
-	@Column
 	private String address;
-	@Column
 	private String city;
-	@Column
 	private String state;
-	@Column
 	private String landMark;
-	@Column
 	private String locationType;
-	@Column
 	private long pinCode;
 
 	public Customer() {

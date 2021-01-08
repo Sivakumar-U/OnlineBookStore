@@ -3,11 +3,9 @@ package com.bridgelabz.onlinebookstore.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ForgotPasswordDto {
 
 	@NotEmpty

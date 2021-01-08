@@ -3,7 +3,6 @@ package com.bridgelabz.onlinebookstore.dto;
 import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @AllArgsConstructor
 
@@ -26,10 +25,8 @@ public class RegistrationDto {
 		return emailId;
 	}
 
-
 	public String getPassword() {
 		return password;
 	}
 
-	
 }

@@ -83,5 +83,10 @@ public class BookController {
 		return bookStoreService.count();
 	}
 	
-
+	@ApiOperation("For sorting the books by new arrivals")
+	@GetMapping("/sort/newArrivals")
+	public ResponseEntity<Response> sortBooksByNewArrivals() throws BookException {
+		List<Book> booksList = bookStoreService.sortBooksByNewArrivals();
+		return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList),HttpStatus.OK);
+	}
 }

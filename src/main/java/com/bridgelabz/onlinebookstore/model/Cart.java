@@ -29,6 +29,8 @@ public @Data class Cart {
 	private User user;
 
 	private Integer orderQuantity;
+	
+	private boolean isInWishList;
 
 	@Transient
 	public double getSubTotal() {

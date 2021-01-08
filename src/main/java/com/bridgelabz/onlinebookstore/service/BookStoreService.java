@@ -14,7 +14,6 @@ import com.bridgelabz.onlinebookstore.repository.BookStoreRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 public class BookStoreService implements IBookStoreService {
 
 	@Autowired
@@ -52,7 +51,6 @@ public class BookStoreService implements IBookStoreService {
 	public Book createBookData(BookDTO bookDTO) {
 		Book bookData = null;
 		bookData = new Book(bookDTO);
-		log.debug("Book Data: " + bookData.toString());
 		return bookstoreRepository.save(bookData);
 	}
 
@@ -71,6 +69,11 @@ public class BookStoreService implements IBookStoreService {
 
 	public long count() {
 		return bookstoreRepository.count();
+	}
+
+	@Override
+	public List<Book> sortBooksByNewArrivals() {
+		return bookstoreRepository.findBookOrderByCreatedDateAndTimeDesc();
 	}
 
 }
