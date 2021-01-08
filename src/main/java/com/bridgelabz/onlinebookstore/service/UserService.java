@@ -48,6 +48,7 @@ public class UserService implements IUserService {
 			getResponse(userDetails.getUserId());
 			return true;
 		}
+
 	}
 
 	private String getResponse(long userId) {

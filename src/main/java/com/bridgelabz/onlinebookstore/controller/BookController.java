@@ -84,8 +84,9 @@ public class BookController {
 
 	@ApiOperation("For counting number of records in database")
 	@GetMapping("/count")
-	public long list() {
-		return bookStoreService.count();
+	public ResponseEntity<Response> list() {
+		long count = bookStoreService.count();
+		return new ResponseEntity<>(new Response(200, "Got count of books successfully!!", count), HttpStatus.OK);
 	}
 
 	@ApiOperation("For sorting the books by new arrivals")

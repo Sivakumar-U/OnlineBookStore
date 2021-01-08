@@ -20,16 +20,16 @@ import com.bridgelabz.onlinebookstore.utility.MailData;
 public class OrderService implements IOrderService {
 
 	@Autowired
-	OrderRepository orderRepository;
+	private OrderRepository orderRepository;
 
 	@Autowired
-	CartRepository cartRepository;
+	private CartRepository cartRepository;
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
-	MailData mailData;
+	private MailData mailData;
 
 	@Override
 	public Order getSummary(String token) {

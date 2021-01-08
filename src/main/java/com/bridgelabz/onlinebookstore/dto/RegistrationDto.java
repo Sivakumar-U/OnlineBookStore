@@ -5,7 +5,6 @@ import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-
 public class RegistrationDto {
 
 	@Pattern(regexp = "^[A-Z][a-z]+\\s?[A-Z][a-z]+$", message = "Please Enter Valid FullName")

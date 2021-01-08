@@ -28,3 +28,4 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	Long findDuplicateBookId(Long bookId);
 
 }
+
