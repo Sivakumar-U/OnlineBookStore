@@ -5,7 +5,6 @@ import com.bridgelabz.onlinebookstore.dto.LoginDto;
 import com.bridgelabz.onlinebookstore.dto.RegistrationDto;
 import com.bridgelabz.onlinebookstore.dto.ResetPasswordDto;
 import com.bridgelabz.onlinebookstore.exception.UserException;
-
 import com.bridgelabz.onlinebookstore.response.Response;
 
 public interface IUserService {

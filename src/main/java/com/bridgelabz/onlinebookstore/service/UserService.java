@@ -43,16 +43,14 @@ public class UserService implements IUserService {
 
 	public boolean register(RegistrationDto registrationDto) {
 		Optional<User> isEmailAvailable = userRepository.findByEmail(registrationDto.getEmailId());
-		System.out.println(isEmailAvailable);
 		if (isEmailAvailable.isPresent()) {
 			return false;
 		} else {
 			User userDetails = new User();
 			BeanUtils.copyProperties(registrationDto, userDetails);
 			userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-			User userObj = userRepository.save(userDetails);
-			System.out.println(userObj);
-			String response = getResponse(userDetails.getUserId());
+			userObj = userRepository.save(userDetails);
+			getResponse(userDetails.getUserId());
 			return true;
 		}
 
@@ -69,14 +67,14 @@ public class UserService implements IUserService {
 	public String login(LoginDto loginDto) throws UserException {
 		Optional<User> userCheck = userRepository.findByEmail(loginDto.getEmailId());
 		if (!userCheck.isPresent()) {
-			throw new UserException("No user found", UserException.ExceptionType.INVALID_USER);
+			throw new UserException("No user found");
 		}
 		if (bCryptPasswordEncoder.matches(loginDto.getPassword(), userCheck.get().getPassword())) {
 			String token = JwtGenerator.createJWT(userCheck.get().getUserId());
 			userRepository.save(userCheck.get());
 			return token;
 		}
-		throw new UserException("Incorrect credentials", UserException.ExceptionType.INVALID_CREDENTIALS);
+		throw new UserException("Incorrect credentials data");
 	}
 
 	@Override
@@ -89,7 +87,7 @@ public class UserService implements IUserService {
 				userRepository.save(userInfo);
 				return true;
 			}
-			throw new UserException("User already verified", UserException.ExceptionType.ALREADY_VERFIED);
+			throw new UserException("User already verified");
 		}
 		return false;
 	}
@@ -122,14 +120,13 @@ public class UserService implements IUserService {
 			message.setFrom(new InternetAddress("from@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailId.getEmailId()));
 			message.setSubject("Reset your password");
-			System.out.println(isIdAvailable.get().getFullName());
 			message.setText("Dear " + isIdAvailable.get().getFullName() + ","
-					+ "\n\n \"We have sent a reset password link to your email.\nPlease click on this url: " + url + "\n\n\nToken: " + token);
+					+ "\n\nWe're sending you this email because you requested a password reset. Click on this link to create a new password: "
+					+ url
+					+ "\n\n\nIf you didn't request a password reset, you can ignore this email. Your password will not be changed."
+					+ "\n\n\nToken: " + token);
 
-			// javax.mail.Transport transport = session.getTransport("smtp");
 			Transport.send(message);
-			System.out.println("Done");
-
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -138,6 +135,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean resetPassword(ResetPasswordDto resetPassword, String token) throws UserException {
+		System.out.println(userObj.getEmailId());
 		if (resetPassword.getNewPassword().equals(resetPassword.getConfirmPassword())) {
 			long id = JwtGenerator.decodeJWT(token);
 			User isIdAvailable = userRepository.findById(id).get();
@@ -146,7 +144,7 @@ public class UserService implements IUserService {
 				userRepository.save(isIdAvailable);
 				return true;
 			}
-			throw new UserException("User not exist", UserException.ExceptionType.INVALID_USER);
+			throw new UserException("User not exist");
 		}
 		return false;
 	}
