@@ -135,7 +135,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean resetPassword(ResetPasswordDto resetPassword, String token) throws UserException {
-		System.out.println(userObj.getEmailId());
+		//System.out.println(userObj.getEmailId());
 		if (resetPassword.getNewPassword().equals(resetPassword.getConfirmPassword())) {
 			long id = JwtGenerator.decodeJWT(token);
 			User isIdAvailable = userRepository.findById(id).get();
