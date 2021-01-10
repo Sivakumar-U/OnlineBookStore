@@ -13,24 +13,26 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="cart_items")
+@Table(name = "cart_items")
 public @Data class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long cartId;
-	
+
 	@ManyToOne
-	@JoinColumn(name="book_id")
+	@JoinColumn(name = "book_id")
 	private Book book;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	private Integer orderQuantity;
-	
+
 	private boolean isInWishList;
+	
+	private boolean isOrdered;
 
 	@Transient
 	public double getSubTotal() {

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.onlinebookstore.exception.BookException;
 import com.bridgelabz.onlinebookstore.model.Book;
 import com.bridgelabz.onlinebookstore.model.Cart;
 import com.bridgelabz.onlinebookstore.model.User;
@@ -34,12 +33,11 @@ public class CartService implements ICartService {
 	public UserRepository userRepository;
 
 	@Override
-	public Cart addBookToCart(String token, Long bookId, Integer order_quantity) throws BookException {
+	public Cart addBookToCart(String token, Long bookId, Integer order_quantity) {
 		Long userId = JwtGenerator.decodeJWT(token);
-		Book book = bookStoreRepository.findById(bookId)
-				.orElseThrow(() -> new BookException("Book with bookId" + bookId + "does not exists!!"));
+		Book book = bookStoreRepository.findById(bookId).orElse(null);
 		if (book == null)
-			throw new BookException("Book with bookId" + bookId + "does not exists!!");
+			return null;
 		else {
 			User user = userRepository.findById(userId).orElse(null);
 
@@ -52,6 +50,7 @@ public class CartService implements ICartService {
 				cartItem.setOrderQuantity(order_quantity);
 				cartItem.setUser(user);
 				cartItem.setBook(book);
+				cartItem.setOrdered(false);
 				bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
 
 			}
@@ -61,18 +60,21 @@ public class CartService implements ICartService {
 	}
 
 	@Override
-	public double updateOrderQuantity(Long bookId, Integer order_quantity, String token) throws BookException {
+	public String updateOrderQuantity(Long bookId, Integer order_quantity, String token) {
 		Long userId = JwtGenerator.decodeJWT(token);
-		Book book = bookStoreRepository.findById(bookId)
-				.orElseThrow(() -> new BookException("Book with bookId" + bookId + "does not exists!!"));
-		double subtotal = 0;
-		if (book.getQuantity() >= order_quantity) {
-			cartRepository.updateOrderQuantity(order_quantity, bookId, userId);
-			subtotal = book.getPrice() * order_quantity;
-			bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
-			return subtotal;
-		} else {
-			return subtotal;
+		Book book = bookStoreRepository.findById(bookId).orElse(null);
+		if (book == null)
+			return null;
+		else {
+			double subtotal = 0;
+			if (book.getQuantity() >= order_quantity) {
+				cartRepository.updateOrderQuantity(order_quantity, bookId, userId);
+				subtotal = book.getPrice() * order_quantity;
+				bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
+				return String.valueOf(subtotal);
+			} else {
+				return "Last "+book.getQuantity()+" are left.";
+			}
 		}
 	}
 
@@ -83,12 +85,12 @@ public class CartService implements ICartService {
 	}
 
 	@Override
-	public void removeProduct(Long bookId, String token) throws BookException {
+	public void removeProduct(Long bookId, String token) {
 		Long userId = JwtGenerator.decodeJWT(token);
-		Book book = bookStoreRepository.findById(bookId)
-				.orElseThrow(() -> new BookException("Book with bookId" + bookId + "does not exists!!"));
-		if (book != null)
-			cartRepository.deleteByUserAndBook(userId, bookId);
+		Book book = bookStoreRepository.findById(bookId).orElse(null);
+		if (book == null)
+			return ;
+		cartRepository.deleteByUserAndBook(userId, bookId);
 	}
 
 	@Override
@@ -102,7 +104,7 @@ public class CartService implements ICartService {
 	}
 
 	@Override
-	public Response addBookToWishList(Long bookId, String token) throws BookException {
+	public Response addBookToWishList(Long bookId, String token) {
 		Long userId = JwtGenerator.decodeJWT(token);
 		Cart cartItem = cartRepository.findByUserIdAndBookId(userId, bookId);
 		Long cartBookId = cartRepository.findDuplicateBookId(bookId);
@@ -112,27 +114,29 @@ public class CartService implements ICartService {
 			} else if (cartItem != null && !cartItem.isInWishList()) {
 				return new Response(200, "Book already added to Cart");
 			} else {
-				Book book = bookStoreRepository.findById(bookId)
-						.orElseThrow(() -> new BookException("Book with bookId" + bookId + "does not exists!!"));
+				Book book = bookStoreRepository.findById(bookId).orElse(null);
+				if (book == null)
+					return null;
 				Cart cart = new Cart();
 				User user = userRepository.findById(userId).orElse(null);
 				cart.setUser(user);
+				cart.setBook(book);
+				cart.setOrderQuantity(1);
 				cart.setInWishList(true);
 				cartRepository.save(cart);
 				return new Response(200, "Book added to WishList");
 			}
 		}
-		throw new BookException("Book already present in wishlist");
-
+		return new Response(200, "Book already present in wishlist");
 	}
 
 	@Override
 	public List<Cart> deleteBookFromWishlist(Long bookId, String token) {
 		Long userId = JwtGenerator.decodeJWT(token);
 		List<Cart> cartItems = cartRepository.findByUserId(userId).stream().filter(Cart::isInWishList)
-				.collect(Collectors.toList());
+											.collect(Collectors.toList());
 		List<Cart> selectedItems = cartItems.stream().filter(cartItem -> cartItem.getBook().getBookId().equals(bookId))
-				.collect(Collectors.toList());
+											.collect(Collectors.toList());
 		for (Cart book : selectedItems) {
 			cartRepository.delete(book);
 		}

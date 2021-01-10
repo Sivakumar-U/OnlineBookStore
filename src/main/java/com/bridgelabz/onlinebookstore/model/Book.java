@@ -17,27 +17,22 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
+@RequiredArgsConstructor
 @Table(name = "book")
 public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "book_id")
 	private Long bookId;
-	@Column
 	private String authorName;
-	@Column
 	private String bookName;
-	@Column
 	private String image;
-	@Column
 	private Integer quantity;
-	@Column
 	public Double price;
-	@Column
 	private String bookDetails;
 
 	@CreationTimestamp
@@ -50,10 +45,6 @@ public class Book {
 	@Column(name = "updated_date_and_time")
 	private Date updatedDateAndTime;
 	
-	public Book() {
-
-	}
-
 	public Book(BookDTO bookDTO) {
 		this.updateBookDataByBookId(bookDTO);
 	}

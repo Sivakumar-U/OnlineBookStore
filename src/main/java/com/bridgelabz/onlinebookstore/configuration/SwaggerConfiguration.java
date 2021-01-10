@@ -21,8 +21,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Online Book Store API")
-				.description("This API can be used to get Books")
+		return new ApiInfoBuilder().title("Online Book Store API").description("This API can be used to get Books")
 				.version("V1.0").build();
 	}
 
