@@ -19,6 +19,14 @@ import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import { GridComponent } from './components/grid/grid.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
+import { FormsModule} from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
+import { CartServiceService } from 'src/services/cart.service';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -43,9 +51,15 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     MatSelectModule,
     MatPaginatorModule,
     MatCardModule,
+    MatSnackBarModule,
     MatInputModule,
+    MatDialogModule,
+    MatRadioModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CartServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

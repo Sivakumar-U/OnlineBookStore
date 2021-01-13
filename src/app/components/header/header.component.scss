@@ -1,14 +1,19 @@
 @import "../../../styles.scss";
 .toolbar {
   background-color: $toolbar-cart-color;
+  top: 0px;
+  left: 0px;
+  height: 60px;
 }
 .toolbar-items {
   margin-left: 150px;
-  margin-right: 150px;
+  margin-top: 10px;
+  height: 50px;
+  align-content: center;
 }
-.logoimage {
+.logo-image {
   float: left;
-  opacity: 1;
+  //opacity: 1;
   padding-top: 5px;
 }
 .logotext {
@@ -22,24 +27,17 @@
   padding-left: 5px;
 }
 .searchbox {
-  font-family: Arial, FontAwesome;
-  padding: 5px 0px;
-  background: #fff;
-  border: 0 none;
-  color: #807e7e;
-  float: left;
-  height: 38px;
-  line-height: 26px;
-  font-size: 14px;
-  margin: 0 0 0 200px;
-  outline: medium none;
-  padding: 6px 14px;
-  width: 500px;
-  border-radius: 2px;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+  top: 14px;
+  left: 400px;
+  width: 490px;
+  height: 33px;
+  margin-left: 100px;
+  background: #FCFCFC 0% 0% no-repeat padding-box;
+  border-radius: 3px;
+  opacity: 1;
 }
 .cart {
-  float: left;
+  float: right;
   margin: 0 0 0 300px;
   color: white;
   padding-top: 5px;
