@@ -22,11 +22,15 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
-import { FormsModule} from '@angular/forms';
-import { ReactiveFormsModule} from '@angular/forms';
 import { CartServiceService } from 'src/services/cart.service';
-
-import { HttpClientModule } from '@angular/common/http';
+import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { HttpClientModule,HTTP_INTERCEPTORS} from '@angular/common/http';
+import { UserService } from '../services/user.service';
+import { AuthGuard } from '../services/auth.guard';
+import {TokenInterceptorService} from '../services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,9 @@ import { HttpClientModule } from '@angular/common/http';
     WishlistComponent,
     GridComponent,
     PaginationComponent,
+    RegisterComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
 
   ],
   imports: [
@@ -59,7 +66,12 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [CartServiceService],
+  providers: [CartServiceService,UserService,AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:TokenInterceptorService,
+      multi:true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

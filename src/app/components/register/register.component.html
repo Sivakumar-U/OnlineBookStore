@@ -1,0 +1,61 @@
+<div class="form-content">
+    <form class="form" action="#" [formGroup]="registerForm" (submit)="onRegister()">
+      <div class="form-head">
+        <span><img src="../../../assets/icons/education.svg"></span>
+        <span class="title">Sign Up</span>
+      </div><br>
+      <div class="row-content">
+        <label class="label text" for="name">Name</label>
+        <div class="row">
+          <input class="input" type="text" id="name" name="name" placeholder="Your Full Name" formControlName="fullName" required>
+          <span class="error-output" *ngIf="registerForm.controls['fullName'].invalid && (registerForm.controls['fullName'].touched
+                                            || registerForm.controls['fullName'].dirty)">
+            <span *ngIf="registerForm.controls['fullName'].errors.required">
+              Name is required
+            </span>
+            <span *ngIf="registerForm.controls['fullName'].errors.pattern">
+              Full name should start with capital letter
+            </span>
+          </span>    
+        </div> 
+      </div>
+      <div class="row-content">
+        <label class="label text" for="emailId">User Name</label>
+        <div class="row">
+          <input class="input" type="email" id="emailId" name="emailId" placeholder="Your Email Id" formControlName="emailId" required>
+          <span class="error-output" *ngIf="registerForm.controls['emailId'].invalid && (registerForm.controls['emailId'].touched
+                                            || registerForm.controls['emailId'].dirty)">
+            <span *ngIf="registerForm.controls['emailId'].errors.required">
+              Email Id is required
+            </span>
+            <span *ngIf="registerForm.controls['emailId'].errors.pattern">
+              Email Id should be proper
+            </span>
+          </span> 
+        </div>
+      </div>
+      <div class="row-content">
+        <label class="label text" for="password">Password</label>
+        <div class="row">
+          <input class="input" [type]="passwordType"
+          id="password" name="password" placeholder="Your password" formControlName="password" required>
+          <span class="error-output" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched
+                                          || registerForm.controls['password'].dirty)">
+            <span *ngIf="registerForm.controls['password'].errors.required">
+              Password is required
+            </span>
+            <span *ngIf="registerForm.controls['password'].errors.pattern">
+              Password length should be 8 must contain at least one uppercase, lowercase, special character and number
+            </span>
+          </span> 
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" (click)="changePasswordType()">Show Password 
+        </div>
+      </div><br>
+      <div class="button-content">
+          <button type="submit" class="button submitButton" [disabled]="registerForm.invalid">SIGN UP</button>
+      </div>
+    </form>
+</div>
+<app-footer></app-footer>

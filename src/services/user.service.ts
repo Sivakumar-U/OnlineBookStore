@@ -1,46 +1,62 @@
+import {HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserService {
-  private orderCheckoutApi = 'orders/checkOut'
 
   constructor(private http: HttpService) { }
+
+  // register(data:any):Observable<any>{
+  //   return this.http.post('http://localhost:8080/bookstore/signup',data);
+  // }
   public register(user: any): Observable<any> {
     console.log(user);
-    return this.http.POST('users/register', user, '');
+    return this.http.POST('bookstore/signup', user, '');
   }
-
+  // forgetPassword(email:string):Observable<any>{
+  //   return this.http.post('http://localhost:8080/bookstore/forget/password',email);
+  // }
   forgotPassword(email: string): Observable<any> {
     const params = new HttpParams().set('email', email);
-    return this.http.PUT('users/forgotpassword', params, '');
+    return this.http.PUT('bookstore/forget/password', params, '');
   }
 
-  resetPassword(data: any, token: string): Observable<any> {
-    console.log('IN USER SERVICE');
-    console.log(data);
-    console.log(token);
-    // const params=new HttpParams().set('token',token);
-    return this.http.PUT('users/resetpassword?token=' + token, data, '');
-  }
-
-  verification(authorization: string) {
-    const token = '';
-    return this.http.GET('user/verify' + authorization, token);
-  }
-
+  // login(data:any):Observable<any>{
+  //   return this.http.post('http://localhost:8080/bookstore/signin',data);
+  // }
   public login(login: any): Observable<any> {
-    return this.http.POST('users/login', login, '');
+    return this.http.POST('bookstore/signin', login, '');
+  }
+  // resetPassword(data:any,token:string):Observable<any>{
+  //   return this.http.post('http://localhost:8080/bookstore/reset/password'+token,data);
+  // }
+  resetPassword(data: any, token: string): Observable<any> {
+    // console.log('IN USER SERVICE');
+    // console.log(data);
+    // console.log(token);
+    // const params=new HttpParams().set('token',token);
+    return this.http.PUT('bookstore/reset/password' + token, data, '');
+  }
+  loggedIn(){
+    return !!localStorage.getItem('token');
   }
 
-  updateUser(data) {
-    console.log("in update user service:", data);
-    return this.http.PUT('users/update', data, { params: new HttpParams().set('token', localStorage.getItem('token')) });
+  getToken(){
+    return localStorage.getItem('token')
   }
+
+  private orderCheckoutApi = 'orders/checkOut'
+
+
+  // verification(authorization: string) {
+  //   const token = '';
+  //   return this.http.GET('user/verify' + authorization, token);
+  // }
+
   onCheckOut(): Observable<any> {
     return this.http.POST(this.orderCheckoutApi, '', {
       headers: new HttpHeaders().set('token', localStorage.getItem('token'))
@@ -66,7 +82,7 @@ export class UserService {
   getAddress(addresstype) {
     return this.http.GET('address/getAddressByType', { params: new HttpParams().set('addressType', addresstype), headers: new HttpHeaders().set('token', localStorage.getItem('token')) });
   }
-  verifyUser(token: string) {
-    return this.http.GET('users/verify', { params: new HttpParams().set('token', token) });
-  }
+  // verifyUser(token: string) {
+  //   return this.http.GET('users/verify', { params: new HttpParams().set('token', token) });
+  // }
 }

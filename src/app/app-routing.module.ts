@@ -1,13 +1,45 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CartComponent } from './components/cart/cart.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AuthGuard } from 'src/services/auth.guard';
 
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'cart', component: CartComponent },
-  { path: '', component: HomeComponent }
+  {
+    path: '',
+    redirectTo:'/home',
+    pathMatch:'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
+  },
+  {
+    path: 'cart',
+    component: CartComponent,
+    canActivate:[AuthGuard]
+  }
   
 ];
 
