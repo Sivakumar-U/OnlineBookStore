@@ -30,7 +30,6 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS} from '@angular/common/http';
 import { UserService } from '../services/user.service';
 import { AuthGuard } from '../services/auth.guard';
-import {TokenInterceptorService} from '../services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -66,12 +65,7 @@ import {TokenInterceptorService} from '../services/token-interceptor.service';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [CartServiceService,UserService,AuthGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass:TokenInterceptorService,
-      multi:true
-    }],
+  providers: [CartServiceService,UserService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
