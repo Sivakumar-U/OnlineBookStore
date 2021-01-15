@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from 'src/services/user.service';
 
@@ -13,7 +14,7 @@ export class RegisterComponent implements OnInit {
   registerForm: any;
   passwordType:string='password';
 
-  constructor(private formBuilder: FormBuilder,private router:Router,private userService:UserService) { 
+  constructor(private formBuilder: FormBuilder,private router:Router,private userService:UserService,private snackBar:MatSnackBar) { 
     this.registerForm=this.formBuilder.group({
       fullName:['',[Validators.required,Validators.pattern('^[A-Z][a-z]+\\s?[A-Z][a-z]+$')]],
       emailId:['',[Validators.required,Validators.pattern('^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$')]],
@@ -23,7 +24,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
+
   changePasswordType(){
     if(this.passwordType=='password')
       this.passwordType='text'
@@ -35,12 +36,14 @@ export class RegisterComponent implements OnInit {
     this.userService.register(this.registerForm.value).subscribe((response: any) => {
       if(response.status==200)
       {
-        alert('Hello ' + this.registerForm.get('fullName').value+' ,you are successfully registered.');
+        this.snackBar.open('Hello ' + this.registerForm.get('fullName').value+' ,you are successfully registered.', 'ok', { duration: 3000 });
+        //alert('Hello ' + this.registerForm.get('fullName').value+' ,you are successfully registered.');
         this.router.navigateByUrl(`login`);
       }
       else
       {
-        alert('Hello ' + this.registerForm.get('fullName').value+' ,you are not successfully registered.');
+        this.snackBar.open('Hello ' + this.registerForm.get('fullName').value+' ,you are not successfully registered.', 'ok', { duration: 3000 });
+        //alert('Hello ' + this.registerForm.get('fullName').value+' ,you are not successfully registered.');
       }
     });
   }

@@ -27,9 +27,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
-import { HttpClientModule,HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { UserService } from '../services/user.service';
-import { AuthGuard } from '../services/auth.guard';
+import { AuthGuard } from 'src/services/auth.guard';
+import {JwtModule} from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { AuthGuard } from '../services/auth.guard';
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule
   ],
   providers: [CartServiceService,UserService,AuthGuard],
   bootstrap: [AppComponent]

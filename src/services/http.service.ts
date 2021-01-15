@@ -6,6 +6,9 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
 })
 export class HttpService {
+    post(arg0: string, data: any): import("rxjs").Observable<any> {
+      throw new Error('Method not implemented.');
+    }
 
     baseUrl = environment.baseUrl;
     constructor(private http: HttpClient) { }

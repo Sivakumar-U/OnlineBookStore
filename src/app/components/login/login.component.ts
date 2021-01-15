@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators,FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from 'src/services/user.service';
 
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: any;
   passwordType:string='password';
 
-  constructor(private formBuilder: FormBuilder,private router:Router,private userService:UserService) { 
+  constructor(private formBuilder: FormBuilder,private router:Router,private userService:UserService,private snackBar:MatSnackBar) { 
     this.loginForm=this.formBuilder.group({
       emailId:['',Validators.required],
       password:['',Validators.required],
@@ -37,11 +38,12 @@ export class LoginComponent implements OnInit {
       console.log("status is ", response.status);
       console.log("message is ", response.message);
       localStorage.setItem("token", response.data);
-      alert('Welcome');
+      this.snackBar.open('Welcome ', 'ok', { duration: 3000 });
       this.router.navigateByUrl(`cart`);
       }
     }, err => {
-      alert('Not logged in successfully');
+      this.snackBar.open('Not logged in successfully', 'ok', { duration: 3000 });
+     // alert('Not logged in successfully');
       this.router.navigateByUrl(`login`);
 
     })

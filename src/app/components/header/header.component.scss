@@ -27,14 +27,6 @@
   padding-left: 5px;
 }
 .searchbox {
-  // top: 14px;
-  // left: 400px;
-  // width: 490px;
-  // height: 33px;
-  // margin-left: 100px;
-  // background: #FCFCFC 0% 0% no-repeat padding-box;
-  // border-radius: 3px;
-  // opacity: 1;
   font-family: Arial, FontAwesome;
   padding: 5px 0px;
   background: #fff;
@@ -57,4 +49,8 @@
   margin: 0 0 0 900px;
   color: white;
   padding-top: 5px;
+}
+a{
+  cursor: pointer;
+  text-decoration: none;
 }
