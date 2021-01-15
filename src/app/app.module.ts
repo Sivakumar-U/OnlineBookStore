@@ -31,6 +31,8 @@ import { HttpClientModule} from '@angular/common/http';
 import { UserService } from '../services/user.service';
 import { AuthGuard } from 'src/services/auth.guard';
 import {JwtModule} from '@auth0/angular-jwt';
+import { SuccessPageComponent } from './components/success-page/success-page.component';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import {JwtModule} from '@auth0/angular-jwt';
     RegisterComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
+    SuccessPageComponent,
 
   ],
   imports: [

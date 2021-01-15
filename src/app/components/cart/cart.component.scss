@@ -1,6 +1,11 @@
-//@import "../../../styles.scss";
+@import "../../../styles.scss";
 mat-card {
   width: 60%;
+  display: block;
+  position: relative;
+  padding: 40px;
+  border-radius: 4px;
+  border-color: #000000;
 }
 .cart-empty{
   //margin-left: 30px;
@@ -41,10 +46,9 @@ span.author-name {
   opacity: 1;
   font-size: 10px;
 }
-.button-minus,
-.button-plus {
+.button-minus,.button-plus {
   outline: none;
-  background-color: #fafafa;
+  background-color: #463c3c;
   border: 1px solid rgb(161, 159, 159);
   opacity: 1;
   height: 24px;
@@ -93,48 +97,52 @@ input::-webkit-inner-spin-button {
   width: 40%;
 }
 .button-placeorder {
-  height: 100%;
-  width: 23%;
-  font-size: medium;
+  width: 151px;
+  height: 35px;
+  top: 308px;
+  left: 772px;
+  float: right;
   outline: none;
-  background-color: #3371b5;
-  border: none;
+  background: #3371B5 0% 0% no-repeat padding-box;
+  border-radius: 2px;
+  cursor: pointer;
+  opacity: 1;
 }
-
-// .form{
-//   margin-top: 25%;
-// }
-
-// .row {
-//   float: right;
-//   margin-top: -73px;
-//   //margin-right: 120px;
-// }
-
-.row3 {
+.button-placeorder:hover{
+  color: #ffffff;
+  background-color: #008cff;
+}
+.row1{
   float: right;
    margin-top: -74px;
- 
 }
-.row1 {
+.row2{
   float: right;
-  margin-top: -50px;
-   // margin-right: 120px;
+  margin-top: -3.5px;
+  line-height: 2.20;
+  //margin-right: 120px;
 }
-// .row1 {
-//   float: right;
-//   margin-top: 1px;
-//  // margin-right: 120px;
+// .row3 {
+//   min-width: 150px;
+//   max-width: 500px;
+//   width: 100%;
 // }
-.row2 {
+.row4 {
   float: right;
   margin-top: -50px;
   //margin-right: 120px;
 }
-
+// .row5{
+//   float: left;
+//   margin-top: 5px;
+// }
+.row4-full-width{
+  width: 100%;
+}
 .mat-form-field {
   width: 300px;
   height: 10px;
+  line-height: 2.120;
 }
 
 // .orderMat
@@ -142,19 +150,6 @@ input::-webkit-inner-spin-button {
 //   margin-top: 70%;
 //   //box-shadow: 0px 2px 8px 0px;
 // }
-.child1 {
-  width: 10%;
-  height: 110px;
-}
-.child2 {
-  margin-top: 3%;
-  padding-left: 2%;
-}
-#check {
-  font-size: small;
-  //height: 20px;
-  color: white;
-}
 .book-img {
   background-color: #a03037;
   width: 90px;

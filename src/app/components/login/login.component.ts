@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       }
     }, err => {
       this.snackBar.open('Not logged in successfully', 'ok', { duration: 3000 });
-     // alert('Not logged in successfully');
       this.router.navigateByUrl(`login`);
 
     })

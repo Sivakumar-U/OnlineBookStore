@@ -37,13 +37,11 @@ export class RegisterComponent implements OnInit {
       if(response.status==200)
       {
         this.snackBar.open('Hello ' + this.registerForm.get('fullName').value+' ,you are successfully registered.', 'ok', { duration: 3000 });
-        //alert('Hello ' + this.registerForm.get('fullName').value+' ,you are successfully registered.');
         this.router.navigateByUrl(`login`);
       }
       else
       {
         this.snackBar.open('Hello ' + this.registerForm.get('fullName').value+' ,you are not successfully registered.', 'ok', { duration: 3000 });
-        //alert('Hello ' + this.registerForm.get('fullName').value+' ,you are not successfully registered.');
       }
     });
   }
