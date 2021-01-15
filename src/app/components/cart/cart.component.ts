@@ -1,14 +1,13 @@
-import { Component, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartModule } from 'src/models/cart/cart.module';
 import { CartBookModule } from 'src/models/cart-book/cart-book.module';
 import { CartServiceService } from 'src/services/cart.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-//import {MatDialog} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+//import { MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from 'src/services/message.service';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UserService } from 'src/services/user.service';
-
 
 @Component({
   selector: 'app-cart',
@@ -22,7 +21,7 @@ export class CartComponent implements OnInit, OnChanges {
   cartBooks: any = [];
   quantity: number;
   bookSum: any = [];
-  image = './assets/images/bookstore-wallpaper.jpg';
+  //image = './assets/images/bookstore-wallpaper.jpg';
   disp = false;
   cart: CartModule;
   totalPrice: number;
@@ -33,8 +32,8 @@ export class CartComponent implements OnInit, OnChanges {
     private messageService: MessageService,
     private fb: FormBuilder,
     private userService: UserService,
-    private route: Router  
-    ) { }
+    private route: Router
+  ) { }
 
   addressGroup = this.fb.group({
     name: [],
@@ -53,7 +52,8 @@ export class CartComponent implements OnInit, OnChanges {
       this.displayBooksInCart(data);
       localStorage.setItem('cartSize', String(this.cartSize));
     });
-    this.cartSize = Number(localStorage.getItem('cartSize'));
+    this.cartSize = 2;
+    //changing: Number(localStorage.getItem('cartSize'));
     this.messageService.quantityMessage.subscribe((data) => {
       this.onUpdateQuantity(data);
       localStorage.setItem('cartSize', String(this.cartSize));
@@ -91,9 +91,7 @@ export class CartComponent implements OnInit, OnChanges {
             localStorage.setItem('cartSize', data.data.totalBooksInCart);
             this.messageService.cartBooks();
             this.messageService.onCartCount();
-            this.snackBar.open(data.message, 'ok', {
-              duration: 2000,
-            });
+            this.snackBar.open(data.message, 'ok', { duration: 2000,});
           }
         },
         (error: any) => {
@@ -110,8 +108,6 @@ export class CartComponent implements OnInit, OnChanges {
       this.cartSize = data.totalBooksInCart;
       this.cart = data.cartBooks.forEach((cartBookData) => {
         this.cartBooks.push(cartBookData);
-        // console.log(cartBookData);
-        // this.totalPrice = this.totalPrice + cartBookData.totalBookPrice;
       });
     } else {
       if (data.status === 200) {
@@ -175,15 +171,14 @@ export class CartComponent implements OnInit, OnChanges {
   }
 
   onPlaceOrder() {
-    // if (localStorage.getItem('token') === null) {
-    //   this.dialog.open(LoginComponent);
-    // }
-    // this.show = true;
-    // this.checkAddressExistornot();
-    // // this.snackBar.open('Order Placed', 'ok', {
-    // //   duration: 2000
-    // // });
-    console.log("Place an order");
+    if (localStorage.getItem('token') === null) {
+      //this.dialog.open(LoginComponent);
+      this.route.navigate(['/login']);
+    }
+    this.show = true;
+    this.checkAddressExistornot();
+    this.snackBar.open('Fill the details', 'ok', { duration: 2000 });
+    console.log("Fill the details to place an order");
   }
 
   continue() {
@@ -191,7 +186,7 @@ export class CartComponent implements OnInit, OnChanges {
       console.log('book in cart:', response);
       this.bookSum = response.data.cartBooks;
       this.bookSum.forEach(function (val) {
-        console.log('book1:', val);
+        console.log('book:', val);
         console.log('name:', val.book.bookName);
       });
     });
@@ -263,7 +258,7 @@ export class CartComponent implements OnInit, OnChanges {
     };
     this.userService.Address(data).subscribe((result: any) => {
       if (result.status == 200) {
-        this.snackBar.open('address added', 'ok', { duration: 5000 });
+        this.snackBar.open('Address added', 'ok', { duration: 5000 });
       }
     });
     this.userService.onCheckOut().subscribe(
@@ -274,7 +269,7 @@ export class CartComponent implements OnInit, OnChanges {
           this.snackBar.open(data.message, 'ok', {
             duration: 2000,
           });
-          this.route.navigate(['/home']);
+          this.route.navigate(['/success-page']);
         }
       },
       (error: any) => {

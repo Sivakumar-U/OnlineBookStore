@@ -7,40 +7,18 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AuthGuard } from 'src/services/auth.guard';
+import { SuccessPageComponent } from './components/success-page/success-page.component';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo:'/home',
-    pathMatch:'full'
-  },
-  {
-    path: 'home',
-    component: HomeComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent
-  },
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent
-  },
-  {
-    path: 'cart',
-    component: CartComponent,
-    canActivate:[AuthGuard]
-  }
-  
+  { path: '', redirectTo:'/home',pathMatch:'full'},
+  { path: 'home', component: HomeComponent  },
+  { path: 'login',  component: LoginComponent },
+  { path: 'register', component: RegisterComponent  },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'cart', component: CartComponent, canActivate:[AuthGuard] },
+  { path: 'success-page', component: SuccessPageComponent}
 ];
 
 @NgModule({

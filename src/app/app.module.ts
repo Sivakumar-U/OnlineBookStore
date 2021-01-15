@@ -30,6 +30,8 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS} from '@angular/common/http';
 import { UserService } from '../services/user.service';
 import { AuthGuard } from '../services/auth.guard';
+import { SuccessPageComponent } from './components/success-page/success-page.component';
+//import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { AuthGuard } from '../services/auth.guard';
     RegisterComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
+    SuccessPageComponent,
 
   ],
   imports: [

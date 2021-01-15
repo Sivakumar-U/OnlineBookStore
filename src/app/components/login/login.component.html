@@ -7,39 +7,43 @@
     <div class="row-content">
       <label class="label text" for="emailId">User Name</label>
       <div class="row">
-        <input class="input" type="email" id="emailId" name="emailId" placeholder="Your Email Id" formControlName="emailId" required>
-        <span class="error-output" *ngIf="loginForm.controls['emailId'].invalid && loginForm.controls['emailId'].touched">
+        <input class="input" type="email" id="emailId" name="emailId" placeholder="Your Email Id"
+          formControlName="emailId" required>
+        <span class="error-output"
+          *ngIf="loginForm.controls['emailId'].invalid && loginForm.controls['emailId'].touched">
           <span *ngIf="loginForm.controls['emailId'].errors.required">
             Email Id is required
           </span>
-        </span> 
+        </span>
       </div>
     </div>
     <div class="row-content">
       <label class="label text" for="password">Password</label>
       <div class="row">
-        <input class="input" [type]="passwordType"
-        id="password" name="password" placeholder="Your password" formControlName="password" required>
-        <span class="error-output" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+        <input class="input" [type]="passwordType" id="password" name="password" placeholder="Your password"
+          formControlName="password" required>
+        <span class="error-output"
+          *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
           <span *ngIf="loginForm.controls['password'].errors.required">
             Password is required
           </span>
-        </span> 
+        </span>
       </div>
       <div class="checkbox">
-        <input type="checkbox" (click)="changePasswordType()">Show Password 
+        <input type="checkbox" (click)="changePasswordType()">Show Password
       </div>
     </div><br>
     <div class="row-content">
-        <a routerLink="../forgot-password">Forgot your password?</a>
-    </div>  
+      <a routerLink="../forgot-password">Forgot your password?</a>
+    </div>
     <div class="button-content">
-        <button type="submit" class="button submitButton" [disabled]="!loginForm.valid">SIGN IN</button>
+      <button type="submit" class="button submitButton" [disabled]="!loginForm.valid">SIGN IN</button>
     </div>
     <div class="row-content">
-        <p>Don't have an account?<br>
-          <a class="signup" routerLink="../register">SIGN UP NOW</a></p>
+      <p>Don't have an account?<br>
+        <a class="signup" routerLink="../register">SIGN UP NOW</a>
+      </p>
     </div>
   </form>
-  </div>
-  <app-footer></app-footer>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,39 @@
+<app-header></app-header>
+<div class="main-div" fxLayout="column" fxLayoutAlign="space-around center">
+    <div class="successImageDiv" fxLayoutAlign="center">
+        <img src="../../../assets/images/SuccessPage.JPG" />
+    </div>
+    <div style="text-align:center;">
+        <span> Hurray!!! your order is confirmed </span><br />
+        <span> the order id is #{{orderId}} save the order id for </span><br />
+        <span> further communication..</span>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center-center">
+        <!--margin-top: 4%-->
+        <table class="table-bordered" style="font-size: 80%; text-align: center;">
+            <thead>
+                <tr>
+                    <th scope="col">Email us</th>
+                    <th scope="col">Contact us</th>
+                    <th scope="col">Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>admin@bookstore.com</td>
+                    <td>+918163475881</td>
+                    <td>42, 14th Main, 15th Cross, Sector 4 ,opp to BDA complex, near Kumarakom
+                        restaurant, HSR Layout, Bangalore 560034</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around center" style="margin-top: 2%">
+        <div style="margin-left:45%; margin-bottom: 10px;">
+            <button mat-button class="continue-shopping" [routerLink]="['/home']">CONTINUE
+                SHOPPING
+            </button>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
