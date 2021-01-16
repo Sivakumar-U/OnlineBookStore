@@ -27,18 +27,30 @@
   padding-left: 5px;
 }
 .searchbox {
-  top: 14px;
-  left: 400px;
-  width: 490px;
-  height: 33px;
-  margin-left: 100px;
-  background: #FCFCFC 0% 0% no-repeat padding-box;
-  border-radius: 3px;
-  opacity: 1;
+  font-family: Arial, FontAwesome;
+  padding: 5px 0px;
+  background: #fff;
+  border: 0 none;
+  color: #807e7e;
+  float: left;
+  height: 38px;
+  line-height: 26px;
+  font-size: 14px;
+  margin: 0 0 0 100px;
+  outline: medium none;
+  padding: 6px 14px;
+  width: 500px;
+  border-radius: 2px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+  position: absolute;
 }
 .cart {
   float: right;
-  margin: 0 0 0 300px;
+  margin: 0 0 0 900px;
   color: white;
   padding-top: 5px;
+}
+a{
+  cursor: pointer;
+  text-decoration: none;
 }

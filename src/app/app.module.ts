@@ -22,11 +22,17 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
-import { FormsModule} from '@angular/forms';
-import { ReactiveFormsModule} from '@angular/forms';
 import { CartServiceService } from 'src/services/cart.service';
+import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
+import { UserService } from '../services/user.service';
+import { AuthGuard } from 'src/services/auth.guard';
+import {JwtModule} from '@auth0/angular-jwt';
+import { SuccessPageComponent } from './components/success-page/success-page.component';
 
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,6 +45,10 @@ import { HttpClientModule } from '@angular/common/http';
     WishlistComponent,
     GridComponent,
     PaginationComponent,
+    RegisterComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
+    SuccessPageComponent,
 
   ],
   imports: [
@@ -57,9 +67,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule
   ],
-  providers: [CartServiceService],
+  providers: [CartServiceService,UserService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
