@@ -24,5 +24,8 @@ export class BookService {
   public sortbookByPriceAsc(): Observable<any> {
     return this.http.GET('book/sort/price/ascending', '');
   }
-}
 
+  public sortbookByNewArrival(): Observable<any> {
+    return this.http.GET('book/sort/newArrivals', '');
+  }
+}

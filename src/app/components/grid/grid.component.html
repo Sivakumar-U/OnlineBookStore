@@ -1,110 +1,112 @@
 <div class="grid-container">
-  <div class="whole-div">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div id="items">
-        Books
-        <span id="active"> ({{ countResult }} items) </span>
-      </div>
-  
-      <div id="items1">
-        <mat-form-field appearance="standard" [formGroup]="gridForm">
-          <mat-label>Sort By Relevance</mat-label>
-          <select
-            matNativeControl
-            required formControlName="selected"
-            (ngModelChange)="onChange()"
-          >
-            <option value="high">high to low</option>
-            <option value="low">low to high</option>
-            <option value="NewArrivals">New Arrivals</option>
-          </select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div
-      fxLayoutGap="40px"
-      fxLayout.lt-sm="column"
-      fxLayout.sm="row wrap"
-      fxLayoutAlign.sm="start center"
-      fxLayout.md="row wrap"
-      fxLayoutAlign.md="start center"
-      fxLayoutAlign.lt-sm="center center"
-      fxLayout.lg="row wrap"
-      fxLayoutAlign.lg="start center"
-    >
-      <div style="margin: 0px;" fxLayout="row" *ngFor="let book of books">
-        <mat-card>
-          <div class="bookImageDiv" fxLayoutAlign="center">
-            <img src="{{ book.image }}" />
-            <mat-card class="centered" *ngIf="book.quantity === 0"
-              ><p class="text">OUT OF STOCK</p></mat-card
+    <div class="whole-div">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div id="items">
+          Books
+          <span id="active"> ({{ countResult }} items) </span>
+        </div>
+    
+        <div id="items1">
+
+          <mat-form-field [formGroup]="gridForm" appearance="standard">
+            <mat-label>Sort By Relevance</mat-label>
+            <select formControlName="value"
+              matNativeControl
+              required
+              (ngModelChange)="onChange()"
             >
-          </div>
-          <div class="bookInfoDiv" fxLayout="column">
-            <mat-card-content>
-              <div class="a">
-                <mat-card-title>{{ book.bookName }}</mat-card-title>
-                <mat-card-subtitle>By {{ book.authorName }}</mat-card-subtitle>
-              </div>
-              <div class="price">Rs.{{ book.price }}</div>
-            </mat-card-content>
-            <div class="left" fxLayout="row" fxLayoutAlign="space-around center">
-              <button
-                mat-raised-button
-                fxLayoutAlign="center"
-                color="primary"
-                style="outline: none;"
-                *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)"
-                (click)="addToCart(book)"
-              >
-                ADD TO CART
-              </button>
-              <button
-                mat-raised-button
-                fxLayoutAlign="center"
-                *ngIf="checkAddedToCart(book.bookId)"
-                style="
-                  width: 100%;
-                  padding: 0%;
-                  height: 32px;
-                  margin-left: 0%;
-                  outline: none;
-                  background-color: #3371b5;
-                "
-                (click)="addToCart(book)"
-              >
-                ADDED TO CART
-              </button>
-              <button
-                mat-stroked-button
-                fxLayoutAlign="center"
-                style="outline: none;"
-                *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)"
-              >
-                WISHLIST
-              </button>
-              <button
-                mat-stroked-button
-                *ngIf="book.quantity === 0"
-                style="
-                  width: 100%;
-                  padding: 0%;
-                  height: 32px;
-                  margin-left: 0%;
-                  outline: none;
-                "
-              >
-                WISHLIST
-              </button>
-            </div>
-          </div>
-        </mat-card>
-        <div class="book-details">
-          <h6><b>Book Details</b></h6>
-          {{ book.bookDetails }}
+              <option value="high">high to low</option>
+              <option value="low">low to high</option>
+              <option value="NewArrivals">New Arrivals</option>
+            </select>
+          </mat-form-field>
         </div>
       </div>
-    </div><br><br>
-    <!-- <app-pagination    [totalRecords]="23" [recordsPerPage]="8"  (page) = "getServerData($event)"></app-pagination> -->
+      <div class="grid-container">
+      <!-- <div fxLayoutGap="40px" fxLayout.lt-sm="column" fxLayout.sm="row wrap" fxLayoutAlign.sm="start center" fxLayout.md="row wrap" fxLayoutAlign.md="start center" fxLayoutAlign.lt-sm="center center" fxLayout.lg="row wrap"> -->
+      <!-- fxLayoutGap="40px"
+        fxLayout.lt-sm="column"
+        fxLayout.sm="row wrap"
+        fxLayoutAlign.sm="start center"
+        fxLayout.md="row wrap"
+        fxLayoutAlign.md="start center"
+        fxLayoutAlign.lt-sm="center center"
+        fxLayout.lg="row wrap"
+        fxLayoutAlign.lg="start center" -->
+        <div style="margin-top: 120px;" fxLayout="row" *ngFor="let book of books">
+          <mat-card>
+            <div class="bookImageDiv" fxLayoutAlign="center">
+              <img src="{{ book.image }}" />
+              <mat-card class="centered" *ngIf="book.quantity === 0"
+                ><p class="text">OUT OF STOCK</p></mat-card
+              >
+            </div>
+            <div class="bookInfoDiv" fxLayout="column">
+              <mat-card-content>
+                <div class="a">
+                  <mat-card-title>{{ book.bookName }}</mat-card-title>
+                  <mat-card-subtitle>By {{ book.authorName }}</mat-card-subtitle>
+                </div>
+                <div class="price">Rs.{{ book.price }}</div>
+              </mat-card-content>
+              <div class="left" fxLayout="row" fxLayoutAlign="space-around center">
+                <button
+                  mat-raised-button
+                  fxLayoutAlign="center"
+                  color="primary"
+                  style="outline: none;"
+                  *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)"
+                  (click)="addToCart(book)"
+                >
+                  ADD TO CART
+                </button>
+                <button
+                  mat-raised-button
+                  fxLayoutAlign="center"
+                  *ngIf="checkAddedToCart(book.bookId)"
+                  style="
+                    width: 100%;
+                    padding: 0%;
+                    height: 32px;
+                    margin-left: 0%;
+                    outline: none;
+                    background-color: #3371b5;
+                  "
+                  (click)="addToCart(book)"
+                >
+                  ADDED TO CART
+                </button>
+                <button
+                  mat-stroked-button
+                  fxLayoutAlign="center"
+                  style="outline: none;"
+                  *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)"
+                >
+                  WISHLIST
+                </button>
+                <button
+                  mat-stroked-button
+                  *ngIf="book.quantity === 0"
+                  style="
+                    width: 100%;
+                    padding: 0%;
+                    height: 32px;
+                    margin-left: 0%;
+                    outline: none;
+                  "
+                >
+                  WISHLIST
+                </button>
+              </div>
+            </div>
+          </mat-card>
+          <div class="book-details">
+            <h6><b>Book Details</b></h6>
+            {{ book.bookDetails }}
+          </div>
+        </div>
+      </div><br><br>
+      <!-- <app-pagination    [totalRecords]="23" [recordsPerPage]="8"  (page) = "getServerData($event)"></app-pagination> -->
+    </div>
   </div>
-</div>
+

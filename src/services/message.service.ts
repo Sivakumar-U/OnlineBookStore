@@ -71,8 +71,8 @@ export class MessageService {
 
     changeoptionMessage() {
         this.bookService.sortbookByPriceDesc().subscribe((data) => {
-          this.userMessageSource.next(data);
-        });
+            this.userMessageSource.next(data);
+          });
       }
     
       changeoptionMessage1() {
@@ -80,6 +80,13 @@ export class MessageService {
           this.userMessageSource.next(data);
         });
       }
+
+      changeoptionMessage2() {
+        this.bookService.sortbookByNewArrival().subscribe((data) => {
+          this.userMessageSource.next(data);
+        });
+      }
+
       onGetAllBooks() {
         this.bookService.getAllbooks().subscribe((data) => {
           this.userMessageSource.next(data);
