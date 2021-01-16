@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 const helper=new JwtHelperService();
@@ -8,7 +9,7 @@ const helper=new JwtHelperService();
 })
 export class AuthService {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private snackBar:MatSnackBar) { }
 
   isAuthorised(){
     try{
@@ -26,6 +27,18 @@ export class AuthService {
     }catch{
       this.router.navigate(['login']);
     }
+  }
+
+  logoutUser(){
+    console.log("Logged out");
+    localStorage.removeItem('token');
+    localStorage.removeItem('cartSize');
+    this.snackBar.open('Logged out successfully', 'ok', { duration: 3000 });
+    this.router.navigate(['/home']);
+  }
+
+  loggedIn(){
+    return !!localStorage.getItem('token');
   }
 }
 

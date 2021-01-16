@@ -45,12 +45,19 @@
   position: absolute;
 }
 .cart {
-  float: right;
-  margin: 0 0 0 900px;
+  margin: 0 0 0 800px;
   color: white;
   padding-top: 5px;
 }
 a{
   cursor: pointer;
   text-decoration: none;
+}
+.user-link{
+  color:#fff;
+  padding:5px 20px;
+  font-size: 16px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  margin:0 0 0 200px;
 }

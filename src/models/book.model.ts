@@ -1,9 +1,11 @@
 export interface Book {
     bookId: any;
-    bookName: string;
     authorName: string;
-    price: string;
-    quantity: string;
-    description: string;
-    imageURL: string;
+    bookName: string;
+    image: string;
+    quantity: number;
+    price: number;
+    bookDetails: string;
+    createdDateAndTime:any;
+    updatedDateAndTime:any;
   }
