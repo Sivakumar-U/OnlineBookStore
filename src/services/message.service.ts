@@ -2,20 +2,28 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CartServiceService } from './cart.service';
 import { Router } from '@angular/router';
+import { BookService } from './book.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class MessageService {
     count: number;
+    private messageSource = new BehaviorSubject(Response);
+    currentMessage = this.messageSource.asObservable();
+    private userMessageSource = new BehaviorSubject(Response);
+    currentUserMessage = this.userMessageSource.asObservable();
     private cartSource = new BehaviorSubject(Response);
     cartMessage = this.cartSource.asObservable();
     private quantitySource = new BehaviorSubject(Response);
     quantityMessage = this.quantitySource.asObservable();
     private cartCountSource = new BehaviorSubject(Response);
     cartCountMessage = this.cartCountSource.asObservable();
+    private booksCountSource = new BehaviorSubject(Response);
+    booksCountMessage = this.booksCountSource.asObservable();
 
-    constructor(
+    constructor(  
+        private bookService: BookService,
         private cartService: CartServiceService,
         private route: Router
     ) { }
@@ -55,4 +63,50 @@ export class MessageService {
             this.cartCountSource.next(error);
         });
     }
+    // searchBook(event) {
+    //     this.bookService.searchBooks(event.target.value).subscribe((data) => {
+    //       this.messageSource.next(data);
+    //     });
+    //   }
+
+    changeoptionMessage() {
+        this.bookService.sortbookByPriceDesc().subscribe((data) => {
+            console.log('high to low')
+            console.log('sorting',data.data)
+            console.log(this.userMessageSource.next(data))
+          this.userMessageSource.next(data.data);
+          console.log('done sort')
+        });
+        // this.bookService.sortbookByPriceDesc().subscribe((data: any) => {
+        //     this.loadAllBooks(data);
+        //   });
+      }
+
+    //   private loadAllBooks(data) {
+    //     if (data.status === 200) {
+    //       data.data.forEach((bookData) => {
+    //         this.books.push(bookData);
+    //       });
+          // this.snackBar.open(data.message, 'ok', {
+          //   duration: 2000,
+          // });
+    //     }
+    //   }
+    
+      changeoptionMessage1() {
+        this.bookService.sortbookByPriceAsc().subscribe((data) => {
+          this.userMessageSource.next(data);
+        });
+      }
+      onGetAllBooks() {
+        this.bookService.getAllbooks().subscribe((data) => {
+          this.userMessageSource.next(data);
+        });
+      }
+
+      // sendByPage(pageIndex) {
+    //     this.bookService.findByPage(pageIndex).subscribe((data) => {
+    //       this.userMessageSource.next(data);
+    //     });
+    //   }
 }
