@@ -30,11 +30,13 @@ export class GridComponent implements OnInit {
     private messageService: MessageService,
     public dialog: MatDialog,
     private formBuilder: FormBuilder
-  ) {this.gridForm=this.formBuilder.group({
-    value:['']
-  }); }
+  ) {
+    this.gridForm = this.formBuilder.group({
+      value: ['']
+    });
+  }
 
-  
+
   ngOnInit() {
     this.getItems();
     //this.getBooks();
@@ -43,33 +45,34 @@ export class GridComponent implements OnInit {
       this.displayBooksInCart(data);
     });
   }
+  ngOnDestroy() {
+  }
 
   displayBooksInCart(data) {
-      if (data.status === 200) {
-        this.cart = data.data;
-      }
-      this.messageService.currentUserMessage.subscribe((data) => {
-            this.books = [];
-            this.loadAllBooks(data);
-          });
+    if (data.status === 200) {
+      this.cart = data.data;
+    }
+    this.messageService.currentUserMessage.subscribe((data) => {
+      this.books = [];
+      this.loadAllBooks(data);
+    });
   }
-//   getServerData(pageIndex: number) {
-//     this.messageService.sendByPage(pageIndex);
-//  }
+  // getServerData(pageIndex: number) {
+  //   this.messageService.sendByPage(pageIndex);
+  // }
+
   onChange() {
-    console.log(this.gridForm.value.value);
+    console.log(this.gridForm.value.value)
     if (this.gridForm.value.value === 'high') {
+      console.log('high sort')
       this.messageService.changeoptionMessage();
-    }
 
-    if (this.gridForm.value.value === 'low') {
-      this.messageService.changeoptionMessage1();
-    }
+    } else {
 
-    if (this.gridForm.value.value === 'NewArrivals') {
-        this.messageService.changeoptionMessage2();
+      if (this.gridForm.value.value === 'low') {
+        this.messageService.changeoptionMessage1();
+      }
     }
-  
   }
 
   private loadAllBooks(data) {
@@ -88,14 +91,14 @@ export class GridComponent implements OnInit {
       this.countResult = data.data;
     });
   }
-  // private getBooks() {
-  //   this.bookservice.getAllbooks().subscribe((data: any) => {
-  //     console.log(data);
-  //     console.log(data.data);
+  private getBooks() {
+    this.bookservice.getAllbooks().subscribe((data: any) => {
+      console.log(data);
+      console.log(data.data);
 
-  //     this.loadAllBooks(data);
-  //   });
-  // }
+      this.loadAllBooks(data);
+    });
+  }
 
   checkAddedToCart(bookId): boolean {
     let addedTocart = false;
@@ -107,13 +110,13 @@ export class GridComponent implements OnInit {
         }
       });
     }
-    if (localStorage.getItem('token') !== null) {
-      this.cart.cartBooks.forEach((element) => {
-        if (element.book.bookId === bookId) {
-          addedTocart = true;
-        }
-      });
-    }
+    // if (localStorage.getItem('token') !== null) {
+    //   this.cart.cartBooks.forEach((element) => {
+    //     if (element.book.bookId === bookId) {
+    //       addedTocart = true;
+    //     }
+    //   });
+    // }
     return addedTocart;
   }
 
@@ -132,6 +135,8 @@ export class GridComponent implements OnInit {
   // }
 
   addToCart(book: Book) {
+    // localStorage.setItem('cartSize', String(0));
+    // console.log("cart size:", localStorage.setItem('cartSize', String(0)));
     if (localStorage.getItem('token') === null) {
       this.cartBook = new CartBookModule();
       this.cartBook.bookQuantity = 1;
@@ -191,5 +196,6 @@ export class GridComponent implements OnInit {
         }
       );
     }
+    this.messageService.sendNumber((this.cart.totalBooksInCart));
   }
 }

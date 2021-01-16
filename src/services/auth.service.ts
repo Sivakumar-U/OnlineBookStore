@@ -33,6 +33,7 @@ export class AuthService {
     console.log("Logged out");
     localStorage.removeItem('token');
     localStorage.removeItem('cartSize');
+    localStorage.removeItem('cart');
     this.snackBar.open('Logged out successfully', 'ok', { duration: 3000 });
     this.router.navigate(['/home']);
   }

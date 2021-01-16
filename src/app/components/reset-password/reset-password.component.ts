@@ -13,16 +13,16 @@ import { MustMatch } from './must-match.validator';
 export class ResetPasswordComponent implements OnInit {
 
   resetPasswordForm: any;
-  passwordType:string='password';
+  passwordType: string = 'password';
   private token: string;
 
-  constructor(private userService:UserService,private formBuilder: FormBuilder,private router:Router,
-    private snackBar: MatSnackBar,private route: ActivatedRoute) { 
-    this.resetPasswordForm=this.formBuilder.group({
-     newPassword:['',[Validators.required,Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$')]],
-     confirmPassword:['',[Validators.required,Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$')]]
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router,
+    private snackBar: MatSnackBar, private route: ActivatedRoute) {
+    this.resetPasswordForm = this.formBuilder.group({
+      newPassword: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$')]],
+      confirmPassword: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$')]]
     }, {
-        validator: MustMatch('newPassword', 'confirmPassword')
+      validator: MustMatch('newPassword', 'confirmPassword')
     });
   }
 
@@ -30,7 +30,7 @@ export class ResetPasswordComponent implements OnInit {
     this.token = this.route.snapshot.paramMap.get('token');
   }
 
-  onReset(){
+  onReset() {
     this.userService.resetPassword(this.resetPasswordForm.value, this.token).subscribe(
       (response: any) => {
         console.log(response);
@@ -45,11 +45,11 @@ export class ResetPasswordComponent implements OnInit {
     );
   }
 
-  changePasswordType(){
-    if(this.passwordType=='password')
-      this.passwordType='text'
+  changePasswordType() {
+    if (this.passwordType == 'password')
+      this.passwordType = 'text'
     else
-      this.passwordType='password';
+      this.passwordType = 'password';
   }
 
 }

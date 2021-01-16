@@ -7,14 +7,14 @@ import { HttpHeaders } from '@angular/common/http';
     providedIn: 'root'
 })
 export class CartServiceService {
-    private addToCartApi = 'carts/addToCart/';
-    private removeFromCartApi = 'carts/removeFromCart/';
-    private displayItemsApi = 'carts/displayItems';
-    private addQuantityApi = 'carts/addQuantity/';
-    private removeQuantityApi = 'carts/removeQuantity/';
-    private placeOrderApi = 'carts/placeOrder';
-    private updateQuantityApi = 'carts/updateQuantity/';
-    private cartCountApi = 'carts/cartSize';
+    private addToCartApi = 'cart/add/';
+    private removeFromCartApi = 'cart/remove/';
+    private displayItemsApi = 'cart/get';
+    private addQuantityApi = 'cart/addQuantity/';
+    private removeQuantityApi = 'cart/removeQuantity/';
+    private placeOrderApi = 'cart/placeOrder';
+    private updateQuantityApi = 'cart/update/';
+    private cartCountApi = 'cart/getCount';
     constructor(private http: HttpService) { }
 
     addToCart(bookId: any): Observable<any> {

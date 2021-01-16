@@ -1,4 +1,12 @@
 @import "../../../styles.scss";
+//badge
+.badge-notify{
+  //background:$toolbar-cart-color;
+  color: white;
+  position:relative;
+  top: -18px;
+  left: -5px;
+}
 mat-card {
   width: 60%;
   display: block;

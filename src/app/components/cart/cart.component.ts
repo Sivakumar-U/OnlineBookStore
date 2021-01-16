@@ -17,7 +17,7 @@ import { UserService } from 'src/services/user.service';
 export class CartComponent implements OnInit, OnChanges {
   public show = false;
   public buttonName: any = 'Show';
-  cartSize: number;
+  cartSize: number = 0;
   cartBooks: any = [];
   quantity: number;
   bookSum: any = [];
@@ -36,14 +36,14 @@ export class CartComponent implements OnInit, OnChanges {
   ) { }
 
   addressGroup = this.fb.group({
-    name: [],
-    phone: [],
-    pincode: [],
+    fullName: [],
+    phoneNumber: [],
+    pinCode: [],
     locality: [],
     address: [],
     city: [],
-    landmark: [],
-    type: [],
+    landMark: [],
+    locationType: [],
   });
   ngOnInit() {
     this.messageService.cartMessage.subscribe((data) => {
@@ -52,8 +52,8 @@ export class CartComponent implements OnInit, OnChanges {
       this.displayBooksInCart(data);
       localStorage.setItem('cartSize', String(this.cartSize));
     });
-    this.cartSize = 2;
-    //changing: Number(localStorage.getItem('cartSize'));
+    this.cartSize = Number(localStorage.getItem('cartSize'));
+    console.log("Cart size", this.cartSize);
     this.messageService.quantityMessage.subscribe((data) => {
       this.onUpdateQuantity(data);
       localStorage.setItem('cartSize', String(this.cartSize));
@@ -91,7 +91,7 @@ export class CartComponent implements OnInit, OnChanges {
             localStorage.setItem('cartSize', data.data.totalBooksInCart);
             this.messageService.cartBooks();
             this.messageService.onCartCount();
-            this.snackBar.open(data.message, 'ok', { duration: 2000,});
+            this.snackBar.open(data.message, 'ok', { duration: 2000, });
           }
         },
         (error: any) => {
@@ -108,14 +108,18 @@ export class CartComponent implements OnInit, OnChanges {
       this.cartSize = data.totalBooksInCart;
       this.cart = data.cartBooks.forEach((cartBookData) => {
         this.cartBooks.push(cartBookData);
+
       });
     } else {
       if (data.status === 200) {
         this.cartSize = data.data.totalBooksInCart;
-        data.data.cartBooks.forEach((cartBookData) => {
-          console.log(cartBookData);
+        console.log("data data: ", data.data);
+        console.log("data data cartBooks: ", data.data.cartBooks);
+        data.data.forEach((cartBookData) => {
+          console.log("cart book data: ", cartBookData);
           this.totalPrice = this.totalPrice + cartBookData.totalBookPrice;
           this.cartBooks.push(cartBookData);
+          console.log("cart books: ", this.cartBooks, " cart book data: ", cartBookData);
         });
       }
     }
@@ -247,14 +251,15 @@ export class CartComponent implements OnInit, OnChanges {
   }
   onCheckOut() {
     const data = {
-      name: this.addressGroup.get('name').value,
-      phoneNumber: this.addressGroup.get('phone').value,
-      pincode: this.addressGroup.get('pincode').value,
+      fullName: this.addressGroup.get('fullName').value,
+      phoneNumber: this.addressGroup.get('phoneNumber').value,
+      pinCode: this.addressGroup.get('pinCode').value,
       locality: this.addressGroup.get('locality').value,
       address: this.addressGroup.get('address').value,
       city: this.addressGroup.get('city').value,
-      landmark: this.addressGroup.get('landmark').value,
-      addressType: this.addressGroup.get('type').value
+      landMark: this.addressGroup.get('landMark').value,
+      locationType: this.addressGroup.get('locationType').value,
+      state: this.addressGroup.get('state').value
     };
     this.userService.Address(data).subscribe((result: any) => {
       if (result.status == 200) {
@@ -373,14 +378,14 @@ export class CartComponent implements OnInit, OnChanges {
   }
   addAddress(addr) {
     console.log("address need to add in address:", addr);
-    this.addressGroup.get('name').setValue(addr.name);
-    this.addressGroup.get('phone').setValue(addr.phoneNumber);
-    this.addressGroup.get('pincode').setValue(addr.pincode);
+    this.addressGroup.get('fullName').setValue(addr.fullName);
+    this.addressGroup.get('phoneNumber').setValue(addr.phoneNumber);
+    this.addressGroup.get('pinCode').setValue(addr.pinCode);
     this.addressGroup.get('locality').setValue(addr.locality);
     this.addressGroup.get('address').setValue(addr.address);
     this.addressGroup.get('city').setValue(addr.city);
-    this.addressGroup.get('landmark').setValue(addr.landmark);
-    this.addressGroup.get('type').setValue(addr.addressType);
+    this.addressGroup.get('landMark').setValue(addr.landMark);
+    this.addressGroup.get('locationType').setValue(addr.locationType);
     this.addressGroup.disable();
   }
   onedit() {
@@ -389,7 +394,7 @@ export class CartComponent implements OnInit, OnChanges {
   }
   selectAddrType(event: any) {
     this.addressGroup.reset();
-    this.addressGroup.get('type').setValue(event.value);
+    this.addressGroup.get('locationType').setValue(event.value);
     this.userService.getAddress(event.value).subscribe((result: any) => {
       if (result.status == 200)
         this.addAddress(result.data);

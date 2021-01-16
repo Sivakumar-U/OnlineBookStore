@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CartServiceService } from './cart.service';
 import { Router } from '@angular/router';
 import { BookService } from './book.service';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -21,7 +22,7 @@ export class MessageService {
     cartCountMessage = this.cartCountSource.asObservable();
     private booksCountSource = new BehaviorSubject(Response);
     booksCountMessage = this.booksCountSource.asObservable();
-
+    private subject = new Subject<any>();
     constructor(  
         private bookService: BookService,
         private cartService: CartServiceService,
@@ -92,7 +93,14 @@ export class MessageService {
           this.userMessageSource.next(data);
         });
       }
+      // for badge on cart icon
+      sendNumber(number:number){
+        this.subject.next({text:number});
+      }
 
+      getNumber():Observable<any>{
+        return this.subject.asObservable();
+      }
       // sendByPage(pageIndex) {
     //     this.bookService.findByPage(pageIndex).subscribe((data) => {
     //       this.userMessageSource.next(data);

@@ -53,6 +53,15 @@ a{
   cursor: pointer;
   text-decoration: none;
 }
+// badge
+.badge-notify{
+  //background:$toolbar-cart-color;
+  color: white;
+  position:relative;
+  top: -18px;
+  left: -5px;
+}
+
 .user-link{
   color:#fff;
   padding:5px 20px;
