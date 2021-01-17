@@ -73,36 +73,20 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public boolean verify(String token) throws UserException {
-		long id = JwtGenerator.decodeJWT(token);
-		User userInfo = userRepository.findById(id).get();
-		if (id > 0 && userInfo != null) {
-			if (!userInfo.isVerify()) {
-				userInfo.setVerify(true);
-				userRepository.save(userInfo);
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	@Override
 	public Response forgetPassword(ForgotPasswordDto emailId) throws UserException {
-		String url = "http://localhost:8080/swagger-ui.html#/user-controller/resetPasswordUsingPOST";
+		String url = "http://localhost:4200/reset-password/";
 		Optional<User> isIdAvailable = userRepository.findByEmail(emailId.getEmailId());
 		if (isIdAvailable.isEmpty()) {
 			return new Response(400, "Email not present");
 		}
 
-		if (isIdAvailable.get().isVerify()) {
+		else {
 			String token = JwtGenerator.createJWT(isIdAvailable.get().getUserId());
 			mailData.sendMessage("Reset your password",emailId.getEmailId(), isIdAvailable.get().getFullName(),
 					"\n\nWe're sending you this email because you requested a password reset. Click on this link to create a new password: ",
-					url, "\n\n\nIf you didn't request a password reset, you can ignore this email. Your password will not be changed. \n\n\nToken: ", token);
-			return new Response(HttpStatus.OK.value(), "Email sending");
+					url,token, "\n\n\nIf you didn't request a password reset, you can ignore this email. Your password will not be changed. \n\n");
+			return new Response(HttpStatus.OK.value(), "Check your mail for reset password link");
 		}
-		return new Response(400, "Email is not verified.");
 	}
 
 	@Override

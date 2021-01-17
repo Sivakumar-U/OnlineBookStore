@@ -30,13 +30,12 @@ public @Data class Order {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date orderDate;
 
-	@OneToMany()
-	public List<Cart> cartItems;
+//	@OneToMany()
+//	public List<Cart> cartItems;
 
 	public Order(Long orderId, Long userId, List<Cart> cartItems, double totalPrice) {
 		this.orderId = orderId;
 		this.userId = userId;
-		this.cartItems = cartItems;
 		this.totalPrice = totalPrice;
 	}
 

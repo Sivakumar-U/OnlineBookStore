@@ -13,8 +13,6 @@ public interface IUserService {
 
 	String login(LoginDto loginDto) throws UserException;
 
-	boolean verify(String token) throws UserException;
-
 	Response forgetPassword(ForgotPasswordDto emailId) throws UserException;
 
 	boolean resetPassword(ResetPasswordDto resetPassword, String token) throws UserException;

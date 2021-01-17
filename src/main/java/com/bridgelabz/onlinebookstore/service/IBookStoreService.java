@@ -28,4 +28,6 @@ public interface IBookStoreService {
 
 	List<Book> sortBooksByNewArrivals();
 
+	List<Book> getBooksByBookName(String bookName);
+
 }
