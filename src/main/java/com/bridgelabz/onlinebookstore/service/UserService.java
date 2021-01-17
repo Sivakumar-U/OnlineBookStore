@@ -82,10 +82,12 @@ public class UserService implements IUserService {
 
 		else {
 			String token = JwtGenerator.createJWT(isIdAvailable.get().getUserId());
-			mailData.sendMessage("Reset your password",emailId.getEmailId(), isIdAvailable.get().getFullName(),
+			mailData.sendMessage("Reset your password", emailId.getEmailId(), isIdAvailable.get().getFullName(),
 					"\n\nWe're sending you this email because you requested a password reset. Click on this link to create a new password: ",
-					url,token, "\n\n\nIf you didn't request a password reset, you can ignore this email. Your password will not be changed. \n\n");
+					url, token,
+					"\n\n\nIf you didn't request a password reset, you can ignore this email. Your password will not be changed. \n\n");
 			return new Response(HttpStatus.OK.value(), "Check your mail for reset password link");
+
 		}
 	}
 
