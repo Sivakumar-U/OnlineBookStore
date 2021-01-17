@@ -5,9 +5,9 @@
 
     <a class="logotext" routerLink="../home"> Bookstore</a>
 
-    <input class="searchbox" type="search" placeholder="&#xF002; Search" />
+    <input class="searchbox" (input)="onKey($event)" type="search" placeholder="&#xF002; Search" />
     <a routerLink="../cart" class="cart">cart<img src="assets/icons/carticon/supermarket.png" />
-    <span *ngIf="number" class="badge badge-notify">{{number.text}}</span></a>
+      <span *ngIf="number" class="badge badge-notify">{{number.text}}</span></a>
     <a class="user-link" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
     <a class="user-link" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">Logout</a>
   </div>

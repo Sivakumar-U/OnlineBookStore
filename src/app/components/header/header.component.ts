@@ -12,6 +12,7 @@ import { MessageService } from 'src/services/message.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   number: any;
   data: any;
+  isCart: boolean;
   subscription: Subscription;
   cartCounter: number;
 
@@ -33,6 +34,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onKey(event: any) {
+    this.messageService.searchBook(event);
+    this.isCart = false;
   }
 
   cartCount(data) {

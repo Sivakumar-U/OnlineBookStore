@@ -12,6 +12,11 @@ export class BookService {
   public getAllbooks(): Observable<any> {
     return this.http.GET('book/getBooks', '');
   }
+
+  public searchBooks(searchBook: string): Observable<any> {
+    const token = '';
+    return this.http.GET('book/getBookList/' + searchBook, token);
+  }
  
   public getNumberOfItems(): Observable<any> {
     return this.http.GET('book/count',"");
