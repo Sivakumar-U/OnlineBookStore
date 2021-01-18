@@ -36,7 +36,7 @@ public class CartService implements ICartService {
 	public Cart addBookToCart(String token, Long bookId, Integer order_quantity) {
 		Long userId = JwtGenerator.decodeJWT(token);
 		Book book = bookStoreRepository.findById(bookId).orElse(null);
-		if (book == null)
+		if (book == null || book.getQuantity() == 0)
 			return null;
 		else {
 			User user = userRepository.findById(userId).orElse(null);
@@ -50,7 +50,6 @@ public class CartService implements ICartService {
 				cartItem.setOrderQuantity(order_quantity);
 				cartItem.setUser(user);
 				cartItem.setBook(book);
-				cartItem.setOrdered(false);
 				bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
 
 			}
@@ -70,7 +69,7 @@ public class CartService implements ICartService {
 			if (book.getQuantity() >= order_quantity) {
 				cartRepository.updateOrderQuantity(order_quantity, bookId, userId);
 				subtotal = book.getPrice() * order_quantity;
-				bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity, bookId);
+				bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() - order_quantity+1, bookId);
 				return String.valueOf(subtotal);
 			} else {
 				return "Last "+book.getQuantity()+" are left.";
@@ -90,6 +89,8 @@ public class CartService implements ICartService {
 		Book book = bookStoreRepository.findById(bookId).orElse(null);
 		if (book == null)
 			return ;
+		Cart cartItem = cartRepository.findByUserIdAndBookId(userId, bookId);
+		bookStoreRepository.updateQuantityAfterOrder(book.getQuantity() + cartItem.getOrderQuantity(), bookId);
 		cartRepository.deleteByUserAndBook(userId, bookId);
 	}
 

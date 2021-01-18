@@ -28,7 +28,7 @@ public @Data class User {
 	private String fullName; // name
 	private String emailId; // emailId
 	private String password; // password
-	private boolean isVerify; // for verification
+//	private boolean isVerify; // for verification
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)

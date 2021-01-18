@@ -82,4 +82,13 @@ public class BookStoreService implements IBookStoreService {
 		return booksList;
 	}
 
+	@Override
+	public List<Book> getBooksByBookName(String bookName) {
+		List<Book> booksList = bookstoreRepository.findBooksByBookName(bookName);
+		if (booksList.isEmpty()) {
+			return null;
+		}
+		return booksList;
+	}
+
 }

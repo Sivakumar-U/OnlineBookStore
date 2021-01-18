@@ -98,4 +98,15 @@ public class BookController {
 			return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList),HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Books do not exist!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
+	
+	@ApiOperation("To get book by book name")
+	@GetMapping("/getBookList/{bookName}")
+	public ResponseEntity<Response> getBookDataByBookName(@PathVariable("bookName") String bookName) {
+		List<Book> books = bookStoreService.getBooksByBookName(bookName);
+		if(books != null)
+			return new ResponseEntity<>(new Response(200, "Get call for book successfull", books), HttpStatus.OK);
+		else 
+			return new ResponseEntity<>(new Response(400, "Book does not exists!!"), HttpStatus.NOT_ACCEPTABLE);
+	}
+	
 }

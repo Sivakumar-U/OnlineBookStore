@@ -52,6 +52,7 @@ public class OrderService implements IOrderService {
 				isorderIdUnique = true;
 			}
 		}
+		Cart carts=cartRepository.findByUserIds(userId);
 		List<Cart> cart = cartRepository.findByUserId(userId);
 		double totalPrice = cart.stream().mapToDouble(book -> book.getSubTotal()).sum();
 		Order order = new Order(orderId, userId, cart, totalPrice);

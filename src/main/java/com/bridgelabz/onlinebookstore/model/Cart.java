@@ -32,8 +32,6 @@ public @Data class Cart {
 
 	private boolean isInWishList;
 	
-	private boolean isOrdered;
-
 	@Transient
 	public double getSubTotal() {
 		return this.book.getPrice() * orderQuantity;

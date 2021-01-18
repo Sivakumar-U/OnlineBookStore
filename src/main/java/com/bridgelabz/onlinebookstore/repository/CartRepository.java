@@ -12,6 +12,9 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
 	@Query(value = "select * from cart_items where user_id=:userId", nativeQuery = true)
 	public List<Cart> findByUserId(Long userId);
+	
+	@Query(value = "select * from cart_items where user_id=:userId", nativeQuery = true)
+	Cart findByUserIds(Long userId);
 
 	@Query("UPDATE Cart c SET c.orderQuantity=?1 WHERE c.book.bookId=?2 AND c.user.userId=?3")
 	@Modifying

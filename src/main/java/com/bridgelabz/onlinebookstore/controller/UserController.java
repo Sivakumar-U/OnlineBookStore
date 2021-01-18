@@ -50,21 +50,14 @@ public class UserController {
 		return new ResponseEntity<>(new Response(200, "User login successful. Token : ", message), HttpStatus.OK);
 	}
 
-	@GetMapping("/verify/{token}")
-	public ResponseEntity<Response> userVerification(@PathVariable("token") String token) throws UserException {
-		if (userService.verify(token))
-			return new ResponseEntity<>(new Response(200, "User verified successfully"), HttpStatus.OK);
-		return new ResponseEntity<>(new Response(400, "User verification failed"), HttpStatus.NOT_ACCEPTABLE);
-	}
-
 	@PostMapping("/forget/password")
 	public ResponseEntity<Response> forgotPassword(@Valid @RequestBody ForgotPasswordDto emailId) throws UserException {
 		Response response = userService.forgetPassword(emailId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping("/reset/password")
-	public ResponseEntity<Response> resetPassword(@Valid @RequestBody ResetPasswordDto resetPassword, @RequestHeader String token) throws UserException {
+	@PostMapping("/reset/password/{token}")
+	public ResponseEntity<Response> resetPassword(@Valid @RequestBody ResetPasswordDto resetPassword,@PathVariable("token") String token) throws UserException {
 		if (userService.resetPassword(resetPassword, token))
 			return new ResponseEntity<>(new Response(200, "User password reset successful"), HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "User password reset unsuccessful"), HttpStatus.NOT_ACCEPTABLE);
