@@ -18,6 +18,7 @@ import com.bridgelabz.onlinebookstore.service.IBookStoreService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RequestMapping("/book")
 public class BookController {
 

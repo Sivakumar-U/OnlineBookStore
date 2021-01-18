@@ -13,8 +13,8 @@ import com.bridgelabz.onlinebookstore.service.ICustomerService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/customer")
 @CrossOrigin(allowedHeaders = "*", origins = "*")
+@RequestMapping("/customer")
 public class CustomerController {
 
 	@Autowired
