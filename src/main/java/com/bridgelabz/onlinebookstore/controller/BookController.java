@@ -29,7 +29,7 @@ public class BookController {
 	@GetMapping("/getBooks")
 	public ResponseEntity<Response> getAllBooks() throws BookException {
 		List<Book> booksList = bookStoreService.getAllBooks();
-		if(booksList != null)
+		if (booksList != null)
 			return new ResponseEntity<>(new Response(200, "Returned all books successfully", booksList), HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Don't have any books!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
@@ -38,7 +38,7 @@ public class BookController {
 	@GetMapping("/getBook/{bookId}")
 	public ResponseEntity<Response> getBookDataByBookId(@PathVariable("bookId") long bookId) throws BookException {
 		Book booksList = bookStoreService.getBookDataByBookId(bookId);
-		if(booksList != null)
+		if (booksList != null)
 			return new ResponseEntity<>(new Response(200, "Get call for ID successfull", booksList), HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Book does not exists!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
@@ -47,8 +47,9 @@ public class BookController {
 	@GetMapping("/sort/price/descending")
 	public ResponseEntity<Response> sortBooksByPriceFromLowToHigh() {
 		List<Book> booksList = bookStoreService.sortBooksByPriceFromLowToHigh();
-		if(booksList != null)
-			return new ResponseEntity<>(new Response(200, "Books returned in ascending order by price", booksList), HttpStatus.OK);
+		if (booksList != null)
+			return new ResponseEntity<>(new Response(200, "Books returned in ascending order by price", booksList),
+					HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Books do not exist!!"), HttpStatus.NOT_ACCEPTABLE);
 
 	}
@@ -57,8 +58,9 @@ public class BookController {
 	@GetMapping("/sort/price/ascending")
 	public ResponseEntity<Response> sortBooksByPriceFromHighToLow() {
 		List<Book> booksList = bookStoreService.sortBooksByPriceFromHighToLow();
-		if(booksList != null)
-			return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList), HttpStatus.OK);
+		if (booksList != null)
+			return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList),
+					HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Books do not exist!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
 
@@ -71,7 +73,8 @@ public class BookController {
 
 	@ApiOperation("For updating a book details by book id")
 	@PutMapping("/update/{bookId}")
-	public ResponseEntity<Response> updateBookDataByBookId(@PathVariable("bookId") long bookId, @Valid @RequestBody BookDTO bookDTO) {
+	public ResponseEntity<Response> updateBookDataByBookId(@PathVariable("bookId") long bookId,
+			@Valid @RequestBody BookDTO bookDTO) {
 		Book booksList = bookStoreService.updateBookDataByBookId(bookId, bookDTO);
 		return new ResponseEntity<>(new Response(200, "Updated book data successfully!!", booksList), HttpStatus.OK);
 	}
@@ -94,19 +97,20 @@ public class BookController {
 	@GetMapping("/sort/newArrivals")
 	public ResponseEntity<Response> sortBooksByNewArrivals() {
 		List<Book> booksList = bookStoreService.sortBooksByNewArrivals();
-		if(booksList != null)
-			return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList),HttpStatus.OK);
+		if (booksList != null)
+			return new ResponseEntity<>(new Response(200, "Books returned in descending order by price", booksList),
+					HttpStatus.OK);
 		return new ResponseEntity<>(new Response(400, "Books do not exist!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
-	
+
 	@ApiOperation("To get book by book name")
 	@GetMapping("/getBookList/{bookName}")
 	public ResponseEntity<Response> getBookDataByBookName(@PathVariable("bookName") String bookName) {
 		List<Book> books = bookStoreService.getBooksByBookName(bookName);
-		if(books != null)
+		if (books != null)
 			return new ResponseEntity<>(new Response(200, "Get call for book successfull", books), HttpStatus.OK);
-		else 
+		else
 			return new ResponseEntity<>(new Response(400, "Book does not exists!!"), HttpStatus.NOT_ACCEPTABLE);
 	}
-	
+
 }
