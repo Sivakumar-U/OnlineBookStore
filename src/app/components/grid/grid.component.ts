@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Book } from 'src/models/book.model';
 import { CartBookModule } from 'src/models/cart-book/cart-book.module';
 import { CartModule } from 'src/models/cart/cart.module';
@@ -29,6 +30,7 @@ export class GridComponent implements OnInit {
     private cartService: CartServiceService,
     private messageService: MessageService,
     public dialog: MatDialog,
+    public router: Router,
     private formBuilder: FormBuilder
   ) {
     this.gridForm = this.formBuilder.group({
@@ -44,6 +46,8 @@ export class GridComponent implements OnInit {
     this.messageService.cartMessage.subscribe((data: any) => {
       this.displayBooksInCart(data);
     });
+
+
   }
   ngOnDestroy() {
   }
@@ -57,9 +61,6 @@ export class GridComponent implements OnInit {
       this.loadAllBooks(data);
     });
   }
-  // getServerData(pageIndex: number) {
-  //   this.messageService.sendByPage(pageIndex);
-  // }
 
   onChange() {
     console.log(this.gridForm.value.value)
@@ -80,9 +81,6 @@ export class GridComponent implements OnInit {
       data.data.forEach((bookData) => {
         this.books.push(bookData);
       });
-      // this.snackBar.open(data.message, 'ok', {
-      //   duration: 2000,
-      // });
     }
   }
 
@@ -110,41 +108,25 @@ export class GridComponent implements OnInit {
         }
       });
     }
-    // if (localStorage.getItem('token') !== null) {
-    //   this.cart.cartBooks.forEach((element) => {
-    //     if (element.book.bookId === bookId) {
-    //       addedTocart = true;
-    //     }
-    //   });
-    // }
     return addedTocart;
   }
-
-  // openDialog(book) {
-  //   const dialogRef = this.dialog.open(ViewWishlistComponent, {
-  //     width: '500px',
-  //     data: {
-  //       id: book.bookId,
-  //       bookname: book.bookName,
-  //       bookauthor: book.authorName,
-  //       bookprice: book.price,
-  //       bookinfo: book.description,
-  //       bookImage: book.imageURL
-  //     },
-  //   });
-  // }
 
   addToCart(book: Book) {
     // localStorage.setItem('cartSize', String(0));
     // console.log("cart size:", localStorage.setItem('cartSize', String(0)));
     if (localStorage.getItem('token') === null) {
-      this.cartBook = new CartBookModule();
+      this.router.navigate(["/login"]);
+     // this.cartBook = new CartBookModule();
       this.cartBook.bookQuantity = 1;
       if (localStorage.getItem('cart') === null) {
+        // this.messageService.sendNumber((this.cart.totalBooksInCart));
+        // console.log("add to cart: ",this.messageService.sendNumber((this.cart.totalBooksInCart)));
         this.cart = new CartModule();
         this.cart.totalBooksInCart = 0;
       } else {
         this.cart = JSON.parse(localStorage.getItem('cart'));
+        //   this.messageService.sendNumber((this.cart.totalBooksInCart));
+        //   console.log("2 add to cart: ",this.messageService.sendNumber((this.cart.totalBooksInCart)));
       }
       if (this.cart.totalBooksInCart < 5) {
         this.cartBook.book = book;

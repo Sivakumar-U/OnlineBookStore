@@ -11,14 +11,14 @@ import { SuccessPageComponent } from './components/success-page/success-page.com
 
 
 const routes: Routes = [
-  { path: '', redirectTo:'/home',pathMatch:'full'},
-  { path: 'home', component: HomeComponent  },
-  { path: 'login',  component: LoginComponent },
-  { path: 'register', component: RegisterComponent  },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
-  { path: 'cart', component: CartComponent, canActivate:[AuthGuard] },
-  { path: 'success-page', component: SuccessPageComponent}
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+  { path: 'success-page', component: SuccessPageComponent }
 ];
 
 @NgModule({

@@ -21,7 +21,6 @@ export class CartComponent implements OnInit, OnChanges {
   cartBooks: any = [];
   quantity: number;
   bookSum: any = [];
-  //image = './assets/images/bookstore-wallpaper.jpg';
   disp = false;
   cart: CartModule;
   totalPrice: number;
@@ -50,13 +49,13 @@ export class CartComponent implements OnInit, OnChanges {
       this.cartBooks = [];
       this.totalPrice = 0;
       this.displayBooksInCart(data);
-      localStorage.setItem('cartSize', String(this.cartSize));
+      localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
     });
     this.cartSize = Number(localStorage.getItem('cartSize'));
     console.log("Cart size", this.cartSize);
     this.messageService.quantityMessage.subscribe((data) => {
       this.onUpdateQuantity(data);
-      localStorage.setItem('cartSize', String(this.cartSize));
+      localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
     });
   }
   ngOnChanges() {
@@ -105,14 +104,16 @@ export class CartComponent implements OnInit, OnChanges {
 
   displayBooksInCart(data) {
     if (localStorage.getItem('token') === null) {
-      this.cartSize = data.totalBooksInCart;
+      this.cartSize =  Number(localStorage.getItem('cartSize'));
+      //data.totalBooksInCart;
       this.cart = data.cartBooks.forEach((cartBookData) => {
         this.cartBooks.push(cartBookData);
 
       });
     } else {
       if (data.status === 200) {
-        this.cartSize = data.data.totalBooksInCart;
+        this.cartSize = Number(localStorage.getItem('cartSize'));
+        //data.data.totalBooksInCart;
         console.log("data data: ", data.data);
         console.log("data data cartBooks: ", data.data.cartBooks);
         data.data.forEach((cartBookData) => {
@@ -242,7 +243,7 @@ export class CartComponent implements OnInit, OnChanges {
           }
         },
         (error: any) => {
-          this.snackBar.open(error.error.message, 'ok', {
+          this.snackBar.open(error.message, 'ok', {
             duration: 20000,
           });
         }
@@ -342,18 +343,14 @@ export class CartComponent implements OnInit, OnChanges {
       this.snackBar.open(data.message, 'ok', {
         duration: 2000
       });
-    } else if (data.status === 417) {
-      this.messageService.cartBooks();
-      this.snackBar.open(data.error.message, 'cancel', {
-        duration: 2000
-      });
-    } else if (data.status === 404) {
+    } else if (data.status === 400) {
       this.messageService.cartBooks();
       this.snackBar.open(data.error.message, 'cancel', {
         duration: 2000
       });
     }
   }
+
   checkAddressExistornot() {
     console.log("checking address exist or not");
     this.userService.getAddress('home').subscribe((result: any) => {

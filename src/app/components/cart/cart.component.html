@@ -21,34 +21,32 @@
             <div fxLayout="column" fxLayoutAlign="space-around start" *ngFor="let cartBook of cartBooks">
                 <div class="book" fxLayout="row">
                     <div class="book-image">
-                        <!---->
-                        <img src="{{ cartBook.book.imageURL }}" />
+                        <img src="{{ cartBook.book.image }}" />
                     </div>
-
                     <div fxLayout="column" fxLayoutAlign="start start" class="book-details" fxLayoutGap="6%">
                         <span>{{ cartBook.book.bookName }}</span>
                         <span class="author-name">by {{ cartBook.book.authorName }}</span>
                         <span>Rs. {{ cartBook.totalBookPrice }}</span>
                     </div>
                 </div>
-                <div class="input-group" fxLayout="row" fxLayoutGap="2%" fxLayoutAlign="start center">
+                <div class="input-group" fxLayout="row" fxLayoutGap="5%" fxLayoutAlign="start center">
                     <button mat-mini-fab class="button-minus" *ngIf="cartBook.bookQuantity==1" [disabled]="true"
                         fxLayoutAlign="center start">
                         <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">remove
                         </mat-icon>
-                    </button>
+                    </button>&nbsp;
                     <button mat-mini-fab class="button-minus" *ngIf="cartBook.bookQuantity>1"
                         (click)="removeQuantity(cartBook)" fxLayoutAlign="center start">
                         <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">remove
                         </mat-icon>
-                    </button>
+                    </button> &nbsp;
                     <input mat-input type="number" (input)="onKey($event,cartBook)" max="5" min="1"
                         value="{{ cartBook.bookQuantity }}" class="quantity-field" />
                     <button mat-mini-fab class="button-plus" (click)="addQuantity(cartBook)"
                         fxLayoutAlign="center start">
                         <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">add
                         </mat-icon>
-                    </button>
+                    </button> &nbsp;
                     <button mat-button class="button-remove" (click)="removeFromCart(cartBook)"
                         fxLayoutAlign="center center">
                         Remove

@@ -12,7 +12,7 @@ export class CartServiceService {
     private displayItemsApi = 'cart/get';
     private addQuantityApi = 'cart/addQuantity/';
     private removeQuantityApi = 'cart/removeQuantity/';
-    private placeOrderApi = 'cart/placeOrder';
+    private placeOrderApi = 'cart/placeOrder/';
     private updateQuantityApi = 'cart/update/';
     private cartCountApi = 'cart/getCount';
     constructor(private http: HttpService) { }

@@ -41,8 +41,11 @@ export class LoginComponent implements OnInit {
         console.log("status is ", response.status);
         console.log("message is ", response.message);
         localStorage.setItem("token", response.data);
+        localStorage.setItem("cart", localStorage.getItem('cart'));
+        localStorage.setItem("cartSize", localStorage.getItem('cartSize'));
+        console.log("getItem('cartSize')",localStorage.getItem('cartSize')); 
         this.snackBar.open('Welcome', 'ok', { duration: 3000 });
-        //this.router.navigate(['/cart']);
+        this.router.navigate(['/home']);
         //this.router.navigateByUrl(`cart`);
         //this.messageService.onRefresh();
         this.cartService.placeOrder(JSON.parse(localStorage.getItem('cart'))).subscribe((data: any) => {
@@ -52,15 +55,15 @@ export class LoginComponent implements OnInit {
             localStorage.removeItem('cart');
           }
         }, (error: any) => {
-          if (error.status === 417) {
+          if (error.status === 400) {
             this.messageService.cartBooks();
             localStorage.removeItem('cart');
-            this.snackBar.open(error.error.message, 'ok', {
-              duration: 2000
+            this.snackBar.open(error.message, 'ok', {
+              duration: 5000
             });
           }
-          this.snackBar.open(error.error.message, 'ok', {
-            duration: 2000
+          this.snackBar.open(error.message, 'ok', {
+            duration: 5000
           });
         });
       }
