@@ -89,13 +89,16 @@ mat-card:hover + .book-details {
   font-weight: 10px;
 }
 
-#left {
+#left-button {
   float: right;
   height: -10px;
   width: 15%;
   margin-top: -367px;
   margin-right: -14%;
   border-color: white;
+  background: #A03037 0% 0% no-repeat padding-box;
+  border-radius: 2px;
+  opacity: 1;
 }
 
 .row {

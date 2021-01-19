@@ -28,7 +28,7 @@ export class UserService {
   
   }
 
-  private orderCheckoutApi = 'orders/checkOut'
+  private orderCheckoutApi = 'order/place'
 
   onCheckOut(): Observable<any> {
     return this.http.POST(this.orderCheckoutApi, '', {
@@ -45,7 +45,7 @@ export class UserService {
   }
   Address(data) {
     console.log("address in user service:", data);
-    return this.http.POST('address/addAddress', data, { headers: new HttpHeaders().set('token', localStorage.getItem('token')) });
+    return this.http.POST('customer/details', data, { headers: new HttpHeaders().set('token', localStorage.getItem('token')) });
   }
   getAddress(addresstype) {
     return this.http.GET('address/getAddressByType', { params: new HttpParams().set('addressType', addresstype), headers: new HttpHeaders().set('token', localStorage.getItem('token')) });

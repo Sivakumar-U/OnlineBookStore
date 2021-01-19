@@ -36,39 +36,10 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.userService.login(this.loginForm.value).subscribe(response => {
       if (response.status == 200) {
-        console.log("response is ", response);
-        console.log("token is ", response.data);
-        console.log("status is ", response.status);
-        console.log("message is ", response.message);
         localStorage.setItem("token", response.data);
-        localStorage.setItem("cart", localStorage.getItem('cart'));
-        localStorage.setItem("cartSize", localStorage.getItem('cartSize'));
-        console.log("getItem('cartSize')",localStorage.getItem('cartSize')); 
-        this.snackBar.open('Welcome', 'ok', { duration: 3000 });
-        this.router.navigate(['/home']);
-        //this.router.navigateByUrl(`cart`);
-        //this.messageService.onRefresh();
-        this.cartService.placeOrder(JSON.parse(localStorage.getItem('cart'))).subscribe((data: any) => {
-          if (data.status === 200) {
-            this.messageService.cartBooks();
-            this.messageService.onCartCount();
-            localStorage.removeItem('cart');
-          }
-        }, (error: any) => {
-          if (error.status === 400) {
-            this.messageService.cartBooks();
-            localStorage.removeItem('cart');
-            this.snackBar.open(error.message, 'ok', {
-              duration: 5000
-            });
-          }
-          this.snackBar.open(error.message, 'ok', {
-            duration: 5000
-          });
-        });
+          this.router.navigate(['home']);
       }
-
-    }, err => {
+}, err => {
       this.snackBar.open('Not logged in successfully', 'ok', { duration: 3000 });
       this.router.navigateByUrl(`login`);
 

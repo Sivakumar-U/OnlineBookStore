@@ -8,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class SuccessPageComponent implements OnInit {
 
   constructor() { }
-  id = localStorage.getItem('orderId');
-  orderId = parseInt(this.id, 4) * 7893;
+  orderId = localStorage.getItem('orderId');
   ngOnInit() {
   }
 }

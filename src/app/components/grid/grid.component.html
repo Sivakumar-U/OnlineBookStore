@@ -19,16 +19,6 @@
       </div>
     </div>
     <div class="grid-container">
-      <!-- <div fxLayoutGap="40px" fxLayout.lt-sm="column" fxLayout.sm="row wrap" fxLayoutAlign.sm="start center" fxLayout.md="row wrap" fxLayoutAlign.md="start center" fxLayoutAlign.lt-sm="center center" fxLayout.lg="row wrap"> -->
-      <!-- fxLayoutGap="40px"
-        fxLayout.lt-sm="column"
-        fxLayout.sm="row wrap"
-        fxLayoutAlign.sm="start center"
-        fxLayout.md="row wrap"
-        fxLayoutAlign.md="start center"
-        fxLayoutAlign.lt-sm="center center"
-        fxLayout.lg="row wrap"
-        fxLayoutAlign.lg="start center" -->
       <div style="margin-top: 120px;" fxLayout="row" *ngFor="let book of books">
         <mat-card>
           <div class="bookImageDiv" fxLayoutAlign="center">
@@ -45,26 +35,16 @@
               </div>
               <div class="price">Rs.{{ book.price }}</div>
             </mat-card-content>
-            <div class="left" fxLayout="row" fxLayoutAlign="space-around center">
+            <div class="left-button" fxLayout="row" fxLayoutAlign="space-around center">
               <button mat-raised-button fxLayoutAlign="center" color="primary" style="outline: none;"
-                *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)" (click)="addToCart(book)">
+                *ngIf="book.quantity > 0" (click)="addToCart(book)">
                 ADD TO CART
               </button>
-              <button mat-raised-button fxLayoutAlign="center" *ngIf="checkAddedToCart(book.bookId)" style="
-                    width: 100%;
-                    padding: 0%;
-                    height: 32px;
-                    margin-left: 0%;
-                    outline: none;
-                    background-color: #3371b5;
-                  " (click)="addToCart(book)">
-                ADDED TO CART
-              </button>
               <button mat-stroked-button fxLayoutAlign="center" style="outline: none;"
-                *ngIf="book.quantity > 0 && !checkAddedToCart(book.bookId)">
+                *ngIf="book.quantity > 0"(click)="addToWishList()">
                 WISHLIST
               </button>
-              <button mat-stroked-button *ngIf="book.quantity === 0" style="
+              <button mat-stroked-button (click)="addToWishList()" *ngIf="book.quantity === 0" style="
                     width: 100%;
                     padding: 0%;
                     height: 32px;

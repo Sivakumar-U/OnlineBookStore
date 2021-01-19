@@ -44,86 +44,75 @@ export class CartComponent implements OnInit, OnChanges {
     landMark: [],
     locationType: [],
   });
+  //------------
   ngOnInit() {
     this.messageService.cartMessage.subscribe((data) => {
       this.cartBooks = [];
       this.totalPrice = 0;
       this.displayBooksInCart(data);
-      localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
+      // localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
     });
-    this.cartSize = Number(localStorage.getItem('cartSize'));
+    this.getCartCount();
     console.log("Cart size", this.cartSize);
     this.messageService.quantityMessage.subscribe((data) => {
       this.onUpdateQuantity(data);
-      localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
+      //localStorage.setItem('cartSize', localStorage.getItem('cartSize'));
     });
+  }
+
+  getCartCount() {
+    if (localStorage.getItem('token') == null || localStorage.getItem('token') == '') {
+      this.cartSize = 0;
+    }
+    else {
+      this.cartService.cartCount().subscribe(response => {
+        this.cartSize = response;
+      });
+    }
   }
   ngOnChanges() {
     this.messageService.onCartRefresh();
   }
-
+  //-------
   removeFromCart(cartBook: any) {
-    if (
-      localStorage.getItem('token') === null &&
-      localStorage.getItem('cart') != null
-    ) {
-      this.cart = JSON.parse(localStorage.getItem('cart'));
-      this.cart.cartBooks.forEach((element) => {
-        if (element.book.bookId === cartBook.book.bookId) {
-          this.cart.totalBooksInCart =
-            this.cart.totalBooksInCart - element.bookQuantity;
-          this.cart.cartBooks.splice(this.cart.cartBooks.indexOf(element), 1);
+    let id;
+
+    this.cartBooks.forEach((element) => {
+      if (element.book.bookId === cartBook.book.bookId) {
+        id = element.book.bookId;
+      }
+    })
+    console.log("id: ", id);
+    this.cartService.removeFromCart(id).subscribe(
+      (data: any) => {
+        if (data.status === 200) {
+          console.log("data: ", data);
+          this.messageService.cartBooks();
+          this.getCartCount();
+          this.snackBar.open(data.message, 'ok', { duration: 2000, });
         }
-      });
-      localStorage.setItem('cart', JSON.stringify(this.cart));
-      console.log(localStorage.getItem('cartSize'));
-      localStorage.setItem('cartSize', String(this.cart.totalBooksInCart));
-      this.messageService.cartBooks();
-      this.messageService.onCartRefresh();
-      this.snackBar.open('Book Removed From Cart', 'ok', {
-        duration: 2000,
-      });
-    } else {
-      this.cartService.removeFromCart(cartBook.cartBookId).subscribe(
-        (data: any) => {
-          if (data.status === 200) {
-            localStorage.setItem('cartSize', data.data.totalBooksInCart);
-            this.messageService.cartBooks();
-            this.messageService.onCartCount();
-            this.snackBar.open(data.message, 'ok', { duration: 2000, });
-          }
-        },
-        (error: any) => {
-          this.snackBar.open(error.error.message, 'ok', {
+        else {
+          this.snackBar.open(data.message, 'ok', {
             duration: 2000,
           });
         }
-      );
-    }
+      });
   }
 
   displayBooksInCart(data) {
-    if (localStorage.getItem('token') === null) {
-      this.cartSize =  Number(localStorage.getItem('cartSize'));
-      //data.totalBooksInCart;
-      this.cart = data.cartBooks.forEach((cartBookData) => {
-        this.cartBooks.push(cartBookData);
-
-      });
-    } else {
+    this.cartService.displayBooksInCart().subscribe((data: any) => {
+      // this.cartSource.next(data);
+      // this.count = data.data.totalBooksInCart;
       if (data.status === 200) {
-        this.cartSize = Number(localStorage.getItem('cartSize'));
-        //data.data.totalBooksInCart;
-        console.log("data data: ", data.data);
-        console.log("data data cartBooks: ", data.data.cartBooks);
         data.data.forEach((cartBookData) => {
-          console.log("cart book data: ", cartBookData);
-          this.totalPrice = this.totalPrice + cartBookData.totalBookPrice;
+          this.totalPrice = this.totalPrice + cartBookData.book.price;
+          console.log("cartBookData.book.price: ",cartBookData.book.price);
+          // this.totalPrice = this.totalPrice + cartBookData.Price;
           this.cartBooks.push(cartBookData);
-          console.log("cart books: ", this.cartBooks, " cart book data: ", cartBookData);
+          // console.log("cart books: ", this.cartBooks, " cart book data: ", cartBookData);
         });
       }
-    }
+    })
   }
 
   addQuantity(cartBook: any) {
@@ -187,6 +176,9 @@ export class CartComponent implements OnInit, OnChanges {
   }
 
   continue() {
+    this.userService.Address(this.addressGroup.value).subscribe((response: any) => {
+      console.log("Customer details: ", response);
+    });
     this.cartService.displayBooksInCart().subscribe((response: any) => {
       console.log('book in cart:', response);
       this.bookSum = response.data.cartBooks;
@@ -251,40 +243,24 @@ export class CartComponent implements OnInit, OnChanges {
     }
   }
   onCheckOut() {
-    const data = {
-      fullName: this.addressGroup.get('fullName').value,
-      phoneNumber: this.addressGroup.get('phoneNumber').value,
-      pinCode: this.addressGroup.get('pinCode').value,
-      locality: this.addressGroup.get('locality').value,
-      address: this.addressGroup.get('address').value,
-      city: this.addressGroup.get('city').value,
-      landMark: this.addressGroup.get('landMark').value,
-      locationType: this.addressGroup.get('locationType').value,
-      state: this.addressGroup.get('state').value
-    };
-    this.userService.Address(data).subscribe((result: any) => {
-      if (result.status == 200) {
-        this.snackBar.open('Address added', 'ok', { duration: 5000 });
-      }
-    });
     this.userService.onCheckOut().subscribe(
-      (data) => {
-        if (data.status === 200) {
+      (response) => {
+        if (response.status === 200) {
           this.messageService.onCartCount();
-          localStorage.setItem('orderId', data.data.orderId);
-          this.snackBar.open(data.message, 'ok', {
+          localStorage.setItem('orderId', response.data);
+          console.log("response.data",response.data);
+          this.snackBar.open(response.message, 'ok', {
             duration: 2000,
           });
           this.route.navigate(['/success-page']);
+        } else {
+          this.snackBar.open(response.message, 'ok', {
+            duration: 2000,
+          });
         }
-      },
-      (error: any) => {
-        this.snackBar.open(error.error.message, 'ok', {
-          duration: 2000,
-        });
-      }
-    );
+      });
   }
+
   onShowNow() {
     this.route.navigate(['/home']);
   }
@@ -299,7 +275,7 @@ export class CartComponent implements OnInit, OnChanges {
         });
       } else {
         this.cart = JSON.parse(localStorage.getItem('cart'));
-        this.cart.totalBooksInCart = this.cart.totalBooksInCart - cartBook.bookQuantity;
+        this.cart.totalBooksInCart = this.cart.totalBooksInCart - cartBook.orderQuantity;
         if ((this.cart.totalBooksInCart + this.quantity) < 6) {
           this.cart.cartBooks.forEach(element => {
             if (element.book.bookId === cartBook.book.bookId) {
@@ -390,14 +366,7 @@ export class CartComponent implements OnInit, OnChanges {
     this.addressGroup.enable();
   }
   selectAddrType(event: any) {
-    this.addressGroup.reset();
+    //this.addressGroup.reset();
     this.addressGroup.get('locationType').setValue(event.value);
-    this.userService.getAddress(event.value).subscribe((result: any) => {
-      if (result.status == 200)
-        this.addAddress(result.data);
-    },
-      (error: any) => {
-        this.snackBar.open(error.error.message, 'ok', { duration: 3000 });
-      });
   }
 }

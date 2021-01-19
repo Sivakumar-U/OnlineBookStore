@@ -13,56 +13,65 @@
     </div>
 </div>
 <!--    if cartSize is greater than Zero    -->
-<div *ngIf="cartSize > 0" fxLayout="column" fxLayoutGap="2%" style="padding-left: 15%; padding-top: 10%;">
+<div *ngIf="cartSize > 0" fxLayout="column" fxLayoutGap="10%" style="padding-left: 10%; padding-top: 10%;">
     <!-- cart detail -->
     <mat-card>
         <div fxLayout="column">
             <span class="my-cart"> My Cart({{ cartSize }})</span>
-            <div fxLayout="column" fxLayoutAlign="space-around start" *ngFor="let cartBook of cartBooks">
-                <div class="book" fxLayout="row">
-                    <div class="book-image">
-                        <img src="{{ cartBook.book.image }}" />
+            <div fxLayout="row" fxLayoutAlign="space-around start" *ngFor="let cartBook of cartBooks">
+                <!--fxLayout="row" -->
+                <!-- fxLayout="column" style="margin-right: 30%;" -->
+                <div class="grid-container">
+                    <!-- <div> -->
+                    <img src="{{ cartBook.book.image }}" class="grid-image" />
+                    <!-- </div> -->
+                    <div class="grid-item">
+                        <span style="font: normal normal normal 16px/19px Lato; font-weight: bold;">{{
+                            cartBook.book.bookName }}</span> <br />
+                        <span class="author-name">by {{ cartBook.book.authorName }}</span> <br />
+                        <span style="font: normal normal bold 15px/18px Lato;">₹ {{ cartBook.book.price }}</span>
                     </div>
-                    <div fxLayout="column" fxLayoutAlign="start start" class="book-details" fxLayoutGap="6%">
-                        <span>{{ cartBook.book.bookName }}</span>
-                        <span class="author-name">by {{ cartBook.book.authorName }}</span>
-                        <span>Rs. {{ cartBook.totalBookPrice }}</span>
-                    </div>
-                </div>
-                <div class="input-group" fxLayout="row" fxLayoutGap="5%" fxLayoutAlign="start center">
-                    <button mat-mini-fab class="button-minus" *ngIf="cartBook.bookQuantity==1" [disabled]="true"
+
+                </div><br /><br />
+                <!--fxLayout="row" -->
+                <!---Need to work here -->
+                <div class="input-group" fxLayout="row" fxLayoutGap="10%" fxLayoutAlign="start center">
+                    <!--remove button-->
+                    <button mat-mini-fab class="button-minus" (click)="removeQuantity(cartBook)"
                         fxLayoutAlign="center start">
                         <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">remove
                         </mat-icon>
-                    </button>&nbsp;
-                    <button mat-mini-fab class="button-minus" *ngIf="cartBook.bookQuantity>1"
-                        (click)="removeQuantity(cartBook)" fxLayoutAlign="center start">
-                        <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">remove
-                        </mat-icon>
-                    </button> &nbsp;
-                    <input mat-input type="number" (input)="onKey($event,cartBook)" max="5" min="1"
-                        value="{{ cartBook.bookQuantity }}" class="quantity-field" />
+                    </button> &nbsp;&nbsp;
+                    <!--input number-->
+                    <input mat-input type="number" class="quantity-field" (input)="onKey($event,cartBook)" max="5"
+                        min="1" value="{{ cartBook.orderQuantity }}" />&nbsp;&nbsp;
+                    <!--add button-->
+
                     <button mat-mini-fab class="button-plus" (click)="addQuantity(cartBook)"
                         fxLayoutAlign="center start">
                         <mat-icon fxLayoutAlign="center center" style="color: black; font-size: xx-small;">add
                         </mat-icon>
-                    </button> &nbsp;
-                    <button mat-button class="button-remove" (click)="removeFromCart(cartBook)"
-                        fxLayoutAlign="center center">
+                    </button> &nbsp;&nbsp;
+
+                    <button mat-button style="font: normal normal normal 14px/17px Lato; font-weight: bold;"
+                        class="button-remove" (click)="removeFromCart(cartBook)" fxLayoutAlign="center center">
                         Remove
                     </button>
                 </div>
             </div>
             <div fxLayoutAlign="end">
                 <button mat-button (click)="onPlaceOrder()" class="button-placeorder" fxLayoutAlign="center center">
-                    <span style="font-size: small; height: 10px; color: white;">PLACE ORDER</span>
+                    <span style="font-size: small; height: 10px; color: white; padding-bottom: 10%;">PLACE ORDER</span>
                 </button>
             </div>
         </div>
+
+        <!---Need to work till here -->
     </mat-card>
     <!--    Customer details -->
     <mat-card class="form">
-        &nbsp;&nbsp;&nbsp;&nbsp;Customer Details
+        &nbsp;
+        <span style="font: normal normal normal 16px/19px Lato; font-weight: bold;">Customer Details</span>
         <span fxLayoutAlign="end" style="float:right;" *ngIf="show" (click)="onedit()">Edit</span>
         <ng-container *ngIf="show">
             <div style="margin: 0 auto; text-align: left;">
@@ -96,7 +105,7 @@
                     </div>
                     <br /><br />
                     <div class="row3">
-                        <mat-form-field appearance="outline" style="width: 690px;">
+                        <mat-form-field appearance="outline" style="width: 810px;">
                             <mat-label>Address</mat-label>
                             <textarea matInput class="row4-full-width" type="text" formControlName="address" required
                                 #Myaddr (input)="(Myaddr.value)" style="background: none;"></textarea>
@@ -137,22 +146,22 @@
     <!--    Order summary -->
     <mat-card>
         <div fxLayout="column">
-            <span class="my-cart"> Order Summary</span>
-            <div fxLayout="column" fxLayoutAlign="space-around start" *ngFor="let cartBook of cartBooks">
-                <div class="book" *ngIf="disp" fxLayout="row">
-                    <div class="book-image">
-                        <img src="{{ cartBook.book.imageURL }}" />
+            <span class="my-cart">Order Summary</span>
+            <div fxLayout="row" fxLayoutAlign="space-around start" *ngFor="let cartBook of cartBooks">
+                <div class="grid-container" *ngIf="disp">
+                    <div class="grid-image">
+                        <img src="{{ cartBook.book.image }}" />
                     </div>
 
-                    <div fxLayout="column" fxLayoutAlign="start start" class="book-details" fxLayoutGap="6%">
-                        <span>{{ cartBook.book.bookName }}</span>
-                        <span class="author-name">by {{ cartBook.book.authorName }}</span>
-                        <span>Rs. {{ cartBook.totalBookPrice }}</span>
+                    <div class="grid-item">
+                        <span style="font: normal normal bold 15px/18px Lato;">{{ cartBook.book.bookName }}</span><br/>
+                        <span class="author-name">by {{ cartBook.book.authorName }}</span><br/>
+                        <span style="font: normal normal bold 15px/18px Lato;">₹ {{ cartBook.book.price }}</span><br/>
                     </div>
                 </div>
             </div>
             <div class="total-price" fxLayoutAlign="space-between center">
-                <span *ngIf="disp"> Total Price: Rs. {{totalPrice}}</span>
+                <span *ngIf="disp" style="font: normal normal bold 15px/18px Lato;"> Total Price: ₹ {{totalPrice}}</span>
                 <button mat-button (click)="onCheckOut()" class="button-placeorder" fxLayoutAlign="center center"
                     *ngIf="disp">
                     <span style="font-size: small; height: 10px; color: white;">CHECK OUT</span>

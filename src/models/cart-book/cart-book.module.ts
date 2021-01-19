@@ -10,7 +10,7 @@ import { Book } from '../book.model';
 })
 export class CartBookModule {
   cartBookId: number;
-  bookQuantity: number;
+  orderQuantity: number;
   book: Book;
   totalBookPrice: number;
 }
